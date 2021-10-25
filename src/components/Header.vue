@@ -15,7 +15,7 @@
                 </div>
         </router-link>
 
-        <!-- <v-spacer></v-spacer> -->
+        <v-spacer></v-spacer>
 
       <router-link to="/help" active-class="active" tag="button" exact class="nav-btn">
                 <div class="link-container">
@@ -23,17 +23,23 @@
                 </div>
         </router-link>
 
-      <router-link to="/agenda" active-class="active" tag="button" exact class="nav-btn">
+        <v-spacer></v-spacer>
+
+      <router-link to="/agenda" active-class="active" tag="button" exact clasass="nav-btn">
                 <div class="link-container">
                     Agenda
                 </div>
         </router-link>
 
-        <router-link to="/bdashboard" active-class="active" tag="button" exact class="nav-btn">
+        <v-spacer></v-spacer>
+
+        <router-link to="/begeleider-dashboard" active-class="active" tag="button" exact class="nav-btn">
                 <div class="link-container">
                     Dashboard
                 </div>
         </router-link>
+
+        <v-spacer></v-spacer>
 
       <template v-slot:extension>
         
@@ -51,6 +57,5 @@ export default {
 }
 </script>
 <style>
-
     
 </style>

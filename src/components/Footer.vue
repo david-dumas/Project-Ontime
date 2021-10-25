@@ -1,12 +1,14 @@
 <template>
   <v-footer
+    app bottom fixed
     dark
     padless
   >
     <v-card
       flat
       tile
-      class="indigo lighten-1 white--text text-center"
+      color="#006027"
+      class="white--text text-center"
     >
       <v-card-text>
         <v-btn
@@ -49,5 +51,5 @@ export default {
 </script>
 
 <style>
-   
+  
 </style>
