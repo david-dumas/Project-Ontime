@@ -3,7 +3,7 @@
   <div class='agenda'>
       <Header />
 
-              <Calendar />
+      <Calendar />
         
       <Footer />
   </div>
