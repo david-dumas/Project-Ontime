@@ -1,72 +1,47 @@
 <template>
-    <div class='header'>
-        <router-link to="/" active-class="active" tag="button" exact class="nav-btn">
-                <div class="link-container">
+    <nav>
+        <v-toolbar flat app color="#018245">
+            <v-toolbar-title class="text-uppercase grey--text">
+                <span class="font-weight-light">Ontime</span>
+            </v-toolbar-title>
+
+            <v-spacer></v-spacer>
+
+            <v-btn
+            depressed
+            color="primary"
+            >
+            <router-link to="/" active-class="active" tag="button" exact class="nav-btn">
                     Log uit
-                </div>
+        </router-link>
+            </v-btn>
+
+        <router-link to="/" active-class="active" tag="button" exact class="nav-btn">
+                    Log uit
         </router-link>
 
-        <router-link to="/help" active-class="active" tag="button" exact class="nav-btn">
-                <div class="link-container">
+      <router-link to="/help" active-class="active" tag="button" exact class="nav-btn">
                     Help
-                </div>
         </router-link>
-        
-        <router-link to="/agenda" active-class="active" tag="button" exact class="nav-btn">
-                <div class="link-container">
+
+      <router-link to="/agenda" active-class="active" tag="button" exact clasass="nav-btn">
                     Agenda
-                </div>
+        </router-link>
+
+        <router-link to="/begeleider-dashboard" active-class="active" tag="button" exact class="nav-btn">
+                    Dashboard
         </router-link>
         
-        <router-link to="/begeleider-dashboard" active-class="active" tag="button" exact class="nav-btn">
-                <div class="link-container">
-                    Dashboard
-                </div>
-        </router-link>
-            
-    </div>
+        </v-toolbar>
+    </nav>
 </template>
 
 <script>
 export default {
-    name: 'Header'
+    name: 'Header2'
 }
 </script>
+
 <style>
-    .header{
-        background-color: #22606D;
-        overflow:hidden;
-    }
-    .header a{
-        float:right;
-        color: white;
-        padding: 14px 16px;
-        font-size: 17px;
-        text-decoration: none;
-        margin-right: 5%;
-    }
-    .header a:hover{
-        background: #E5EFF3;
-        color: #333;
-    }
 
-    .title{
-    padding-top: 10%;
-    font-size: 50px;
-}
-
-.navbar{
-    height: 100vh;
-    background-color: #578590;
-}
-
-.menu-items{
-    padding-top: 10%;
-}
-
-.nav-btn{
-    font-size: 30px;
-    color: white;
-    text-decoration: none;
-}
 </style>
