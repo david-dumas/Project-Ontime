@@ -12,18 +12,8 @@
             depressed
             color="white"
             >
-            <router-link to="/" active-class="active" tag="button" exact class="nav-btn">
-                        Log uit
-            </router-link>
-        </v-btn>
-
-        <v-btn
-            class="button"
-            depressed
-            color="white"
-            >
-            <router-link to="/help" active-class="active" tag="button" exact class="nav-btn">
-                        Help
+            <router-link to="/begeleider-dashboard" active-class="active" tag="button" exact class="nav-btn">
+                        Dashboard
             </router-link>
         </v-btn>
 
@@ -42,8 +32,17 @@
             depressed
             color="white"
             >
-            <router-link to="/begeleider-dashboard" active-class="active" tag="button" exact class="nav-btn">
-                        Dashboard
+            <router-link to="/help" active-class="active" tag="button" exact class="nav-btn">
+                        Help
+            </router-link>
+        </v-btn>
+        <v-btn
+            class="button"
+            depressed
+            color="white"
+            >
+            <router-link to="/" active-class="active" tag="button" exact class="nav-btn">
+                        Log uit
             </router-link>
         </v-btn>
 
