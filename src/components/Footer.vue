@@ -3,15 +3,16 @@
     app bottom fixed
     padless
     color="#006027"
+    
   >
     <v-card
       flat
       tile
       color="#006027"
+      width="100%"
     >
 
-      <v-card-text class="text-center white--text">
-        Lorem ipsum
+      <v-card-text class="py-2 white--text text-center">
         {{ new Date().getFullYear() }}
       </v-card-text>
     </v-card>
@@ -23,7 +24,3 @@ export default {
     name: 'Footer'
 }
 </script>
-
-<style>
-  
-</style>

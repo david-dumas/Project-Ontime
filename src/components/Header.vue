@@ -12,11 +12,21 @@
             depressed
             color="white"
             >
-            <router-link to="/" active-class="active" tag="button" exact class="nav-btn">
-                        Log uit
+            <router-link to="/begeleider-dashboard" active-class="active" tag="button" exact class="nav-btn">
+                        Dashboard
             </router-link>
         </v-btn>
 
+        <v-btn
+            class="button"
+            depressed
+            color="white"
+            >
+            <router-link to="/agenda" active-class="active" tag="button" exact clasass="nav-btn">
+                        Agenda
+            </router-link>
+        </v-btn>
+        
         <v-btn
             class="button"
             depressed
@@ -32,18 +42,8 @@
             depressed
             color="white"
             >
-            <router-link to="/agenda" active-class="active" tag="button" exact clasass="nav-btn">
-                        Agenda
-            </router-link>
-        </v-btn>
-
-        <v-btn
-            class="button"
-            depressed
-            color="white"
-            >
-            <router-link to="/begeleider-dashboard" active-class="active" tag="button" exact class="nav-btn">
-                        Dashboard
+            <router-link to="/" active-class="active" tag="button" exact class="nav-btn">
+                        Log uit
             </router-link>
         </v-btn>
 

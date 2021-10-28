@@ -4,23 +4,7 @@
   <h1>
     Dashboard
   </h1>
-  <table>
-    <tr>
-      <th>Company</th>
-      <th>Contact</th> 
-      <th>Country</th>
-    </tr>
-    <tr>
-      <td>Alfreds Futterkiste</td>
-      <td>Maria Anders</td> 
-      <td>Germany</td>
-    </tr>
-    <tr>
-      <td>Centro comercial Moctezuma</td>
-      <td>Francisco Chang</td> 
-      <td>Mexico</td>
-    </tr>
-  </table>
+  <Table/>
   <Footer />
 
 </div>
@@ -31,13 +15,15 @@
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Table from '../components/Table.vue';
 
 
 export default {
     name: 'Bdashboard',
     components: {
         Header,
-        Footer
+        Footer,
+        Table
     }
 
 }
@@ -51,4 +37,7 @@ export default {
   text-align: center;
 }
 
+h1 {
+  text-align: center;
+}
 </style>
