@@ -9,9 +9,11 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "firebase": "^9.2.0",
     "v-calendar": "^2.3.4",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
+    "vue-textarea-autosize": "^1.1.1",
     "vuetify": "^2.4.0"
   },
   "devDependencies": {

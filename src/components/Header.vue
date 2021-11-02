@@ -13,7 +13,7 @@
             color="white"
             >
             <router-link to="/begeleider-dashboard" active-class="active" tag="button" exact class="nav-btn">
-                        Dashboard
+                Dashboard
             </router-link>
         </v-btn>
 
@@ -23,7 +23,7 @@
             color="white"
             >
             <router-link to="/agenda" active-class="active" tag="button" exact clasass="nav-btn">
-                        Agenda
+                Agenda
             </router-link>
         </v-btn>
 
@@ -33,7 +33,7 @@
             color="white"
             >
             <router-link to="/help" active-class="active" tag="button" exact class="nav-btn">
-                        Help
+                Help
             </router-link>
         </v-btn>
         <v-btn
@@ -42,7 +42,7 @@
             color="white"
             >
             <router-link to="/" active-class="active" tag="button" exact class="nav-btn">
-                        Log uit
+                Log uit
             </router-link>
         </v-btn>
 
