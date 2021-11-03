@@ -1,28 +1,28 @@
 <template>
-  <v-row class="fill-height">
+    <v-container>
+        <v-card
+            class="mx-auto"
+            max-width="500"
+        >
+            <v-toolbar
+      color="#006027"
+      dark
+    >
+    <v-toolbar-title>Afspraken</v-toolbar-title>
+
+    </v-toolbar>
+
+            <v-container fluid>
+            <v-row dense>
+                
+                <v-card>
+
+                    <v-row class="fill-height">
     <v-col>
       <v-sheet height="64">
         <v-toolbar
           flat
-        >
-        <v-btn
-            class="mr-4"
-            color="primary"
-            @click="dialog = true"
-            dark
-          >
-            Nieuwe Afspraak
-          </v-btn>
-
-          <v-btn
-            outlined
-            class="mr-4"
-            color="grey darken-2"
-            @click="setToday"
-          >
-            Vandaag
-          </v-btn>
-          
+        > 
           <v-btn
             fab
             text
@@ -53,69 +53,16 @@
             bottom
             right
           >
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                outlined
-                color="grey darken-2"
-                v-bind="attrs"
-                v-on="on"
-              >
-                <span>{{ typeToLabel[type] }}</span>
-                <v-icon right>
-                  mdi-menu-down
-                </v-icon>
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item @click="type = 'day'">
-                <v-list-item-title>Dag</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = 'week'">
-                <v-list-item-title>Week</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = 'month'">
-                <v-list-item-title>Maand</v-list-item-title>
-              </v-list-item>
-            </v-list>
+            
           </v-menu>
         </v-toolbar>
       </v-sheet>
-
-      <!-- AFSPRAAK TOEVOEGEN FORM -->
-
-    <v-dialog v-model="dialog" max-width="500">
-      <v-card>
-        <v-container>
-          <v-form @submit.prevent="addEvent">
-            <v-text-field v-model="name" type="text" label="Naam afspraak (verplicht)"></v-text-field>
-
-            <v-text-field v-model="details" type="text" label="Beschrijving"></v-text-field>
-
-            <v-text-field v-model="start" type="datetime-local" label="Start datum (verplicht)"></v-text-field>
-
-            <v-text-field v-model="end" type="datetime-local" label="Eind datum (verplicht)"></v-text-field>
-
-            <v-text-field v-model="color" type="color" label="Kleur (klik voor kleur menu)"></v-text-field>
-          <v-btn 
-          type="submit" 
-          color="primary" 
-          class="mr-4" 
-          @click.stop="dialog=false"
-          
-          >Toevoegen
-          </v-btn>
-          
-          </v-form>
-        </v-container>
-      </v-card>
-    </v-dialog>
-
 
       <v-sheet height="600">
         <v-calendar
           ref="calendar"
           v-model="focus"
-          color="primary"
+          color="#018245"
           :events="events"
           :event-color="getEventColor"
           :type="type"
@@ -180,6 +127,12 @@
       </v-sheet>
     </v-col>
   </v-row>
+                    
+                </v-card>
+            </v-row>
+            </v-container>
+        </v-card>
+    </v-container>
 </template>
 
 <script>
@@ -189,12 +142,9 @@ import { db } from '@/main';
     data: () => ({
       today: new Date().toISOString().substr(0, 10),
       focus: new Date().toISOString().substr(0, 10),
-      type: "month",
+      type: "day",
       typeToLabel: {
-        month: "Month",
-        week: "Week",
         day: "Day",
-        "4day": "4 Days"
       },
       name: null,
       details: null,
@@ -209,6 +159,7 @@ import { db } from '@/main';
       dialog: false,
 
     }),
+    
     mounted() {
       this.getEvents();
     },
@@ -226,51 +177,7 @@ import { db } from '@/main';
         });
         this.events = events;
       },
-      /* ----------- AFSPRAAK TOEVOEGEN -----------*/
-
-      async addEvent(){
-        if(this.name && this.start && this.end) {
-          await db.collection("calEvent").add({
-            name: this.name,
-            details: this.details,
-            start: this.start,
-            end: this.end,
-            color: this.color
-          });
-          this.getEvents();
-          this.name = "";
-          this.details = "";
-          this.start = "";
-          this.end = "";
-          this.color  = "";
-        } else{
-          alert('Name, start and date are required')
-        }
-      },
       
-      /* ----------- AFSPRAAK WIJZIGEN -----------*/
-
-      async updateEvent(ev){
-        await db
-        .collection("calEvent")
-        .doc(this.currentlyEditting)
-        .update({
-          details: ev.details
-        });
-      this.selectedOpen = false;
-      this.currentlyEditting = null;
-      },
-
-      /* ----------- AFSPRAAK VERWIJDEREN -----------*/
-
-      async deleteEvent(ev){
-        await db.collection('calEvent')
-        .doc(ev)
-        .delete();
-
-      this.selectedOpen = false;
-      this.getEvents();
-      },
       viewDay ({ date }) {
         this.focus = date
         this.type = 'day'
@@ -336,4 +243,3 @@ import { db } from '@/main';
   };
 
 </script>
-

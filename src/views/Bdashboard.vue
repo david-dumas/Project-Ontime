@@ -4,23 +4,19 @@
   <h1>
     Dashboard
   </h1>
-  <table>
-    <tr>
-      <th>Company</th>
-      <th>Contact</th> 
-      <th>Country</th>
-    </tr>
-    <tr>
-      <td>Alfreds Futterkiste</td>
-      <td>Maria Anders</td> 
-      <td>Germany</td>
-    </tr>
-    <tr>
-      <td>Centro comercial Moctezuma</td>
-      <td>Francisco Chang</td> 
-      <td>Mexico</td>
-    </tr>
-  </table>
+
+    <div class="tabeldash">
+
+    <Tabeldash />
+
+    </div>
+
+    <div class="afsprakendash">
+
+    <Afsprakendash />
+
+    </div>
+  
   <Footer />
 
 </div>
@@ -28,27 +24,33 @@
 </template>
 
 <script>
-
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-
-
+import Afsprakendash from '../components/Afsprakendash.vue';
+import Tabeldash from '../components/Tabeldash';
 export default {
     name: 'Bdashboard',
     components: {
         Header,
-        Footer
+        Footer,
+        Afsprakendash,
+        Tabeldash
     }
-
 }
 </script>
 
-
 <style>
-
-#table, th, td{
-  border: 1px solid black;
+.bdashboard h1 {
   text-align: center;
 }
-
+.afsprakendash {
+  width: 500px;
+  float: right;
+  margin-right: 3em;
+}
+.tabeldash {
+  width: 500px;
+  float: left;
+  margin-left: 3em;
+}
 </style>
