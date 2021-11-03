@@ -13,7 +13,7 @@ def ontimedb():
             host="localhost",
             database="ontime",
             user="root",
-            password="********")
+            password="")
 
 
 @ app.route("/client", methods = ["GET"])
