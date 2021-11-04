@@ -10,10 +10,10 @@ app.config["DEBUG"] = True
 
 def ontimedb():
     return mysql.connector.connect(
-            host="localhost",
+            host="145.89.87.118",
             database="ontime",
-            user="root",
-            password="")
+            user="ontime",
+            password="ontime")
 
 
 @ app.route("/client", methods = ["GET"])
