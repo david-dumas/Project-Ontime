@@ -1,8 +1,14 @@
 import csv
 import mysql.connector
+import flask
+from flask_cors import CORS
 
 
 #De inloggegevens van de database staan in een apart document in de volgende vorm: 'user','password','host','naam van de database'
+
+app = flask.Flask(__name__)
+CORS(app)
+app.config["DEBUG"] = True
 
 with open(r"C:\Users\caspe\OneDrive\Documents\GitHub\Project-Ontime\txt\mysql.txt") as f1:
         data=csv.reader(f1,delimiter=",")
@@ -12,48 +18,49 @@ with open(r"C:\Users\caspe\OneDrive\Documents\GitHub\Project-Ontime\txt\mysql.tx
             host=row[2]
             database=row[3]
 
-    
-print("enter contact first name: " )
-firstname_contact = input()
-print("enter contact surname: " )
-surname_contact = input()
-print("enter contact phone: " )
-phone_contact = input()
-print("enter contact mail: " )
-mail_contact = input()
-print("enter contact city: " )
-city_contact = input()
-print("enter contact street: " )
-street_contact = input()
-print("enter contact housenumber: " )
-housenumber_contact = input()
-print("enter contact postal code: " )
-postalcode_contact = input()
+@app.route("/addcontact", methods=["POST"])
+def addcontact():    
+    print("enter contact first name: " )
+    firstname = input()
+    print("enter contact surname: " )
+    surname = input()
+    print("enter contact phone: " )
+    phone = input()
+    print("enter contact mail: " )
+    mail = input()
+    print("enter contact city: " )
+    city = input()
+    print("enter contact street: " )
+    street = input()
+    print("enter contact housenumber: " )
+    housenumber = input()
+    print("enter contact postal code: " )
+    postalcode = input()
 
 
-def insert_variables_into_contact(firstname_contact, surname_contact, phone_contact, mail_contact, city_contact, street_contact, housenumber_contact, postalcode_contact):
-    try:
-        ontimedb = mysql.connector.connect(
-                host=host,
-                database=database,
-                user=user,
-                password=password)
+    def insert_variables_into_contact(firstname, surname, phone, mail, city, street, housenumber, postalcode):
+        try:
+            ontimedb = mysql.connector.connect(
+                    host=host,
+                    database=database,
+                    user=user,
+                    password=password)
 
-        mySql_insert_query = """INSERT INTO contact (firstname_contact, surname_contact, phone_contact, mail_contact, city_contact, street_contact, housenumber_contact, postalcode_contact) 
-                            VALUES ( %s, %s, %s, %s, %s, %s, %s, %s) """
+            mySql_insert_query = """INSERT INTO contact (firstname, surname, phone, mail, city, street, housenumber, postalcode) 
+                                VALUES ( %s, %s, %s, %s, %s, %s, %s, %s) """
 
-        cursor = ontimedb.cursor()
-        cursor.execute(mySql_insert_query,(firstname_contact, surname_contact, phone_contact, mail_contact, city_contact, street_contact, housenumber_contact, postalcode_contact,))
-        ontimedb.commit()
-        print(cursor.rowcount, "Record inserted successfully into contact table")
-        cursor.close()
+            cursor = ontimedb.cursor()
+            cursor.execute(mySql_insert_query,(firstname, surname, phone, mail, city, street, housenumber, postalcode,))
+            ontimedb.commit()
+            print(cursor.rowcount, "Record inserted successfully into contact table")
+            cursor.close()
 
-    except mysql.connector.Error as error:
-        print("Failed to insert record into contact table {}".format(error))
+        except mysql.connector.Error as error:
+            print("Failed to insert record into contact table {}".format(error))
 
-    finally:
-        if ontimedb.is_connected():
-            ontimedb.close()
-            print("MySQL connection is closed")
+        finally:
+            if ontimedb.is_connected():
+                ontimedb.close()
+                print("MySQL connection is closed")
 
-insert_variables_into_contact(firstname_contact,surname_contact,phone_contact,mail_contact,city_contact,street_contact,housenumber_contact,postalcode_contact)
+    insert_variables_into_contact(firstname,surname,phone,mail,city,street,housenumber,postalcode)

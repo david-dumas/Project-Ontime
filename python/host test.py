@@ -12,7 +12,7 @@ def get_client_detail(id):
             password="ontime")
 
         cursor = ontimedb.cursor()
-        sql_select_query = """SELECT * FROM client WHERE id_client = %s"""
+        sql_select_query = """SELECT * FROM client WHERE client_id = %s"""
         cursor.execute(sql_select_query, (id,))
         record = cursor.fetchall()
         print(record)

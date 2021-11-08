@@ -16,7 +16,7 @@ def ontimedb():
             password="ontime")
 
 
-@ app.route("/client", methods = ["GET"])
+@app.route("/client", methods = ["GET"])
 def get_table_detail():
     connection = ontimedb()
     cursor = connection.cursor()
