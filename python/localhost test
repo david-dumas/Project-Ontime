@@ -6,13 +6,13 @@ x = input()
 def get_client_detail(id):
     try:
         ontimedb = mysql.connector.connect(
-            host="145.89.192.95",
+            host="145.89.87.118",
             database="ontime",
             user="ontime",
-            password="ontime1!")
+            password="ontime")
 
         cursor = ontimedb.cursor()
-        sql_select_query = """SELECT * FROM people WHERE id = %s"""
+        sql_select_query = """SELECT * FROM client WHERE id = %s"""
         cursor.execute(sql_select_query, (id,))
         record = cursor.fetchall()
         print(record)
