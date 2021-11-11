@@ -1,33 +1,80 @@
 <template>
-  <h1>joee</h1>
+    <div class="login">
+        <br>
+        <br>
+        <div class="image">
+            <img src='../assets/logo-Bartiméus.png' width="150">
+        </div>
+        <br>
+        <br>
+        <br>
+        <h3>Login</h3>
+        
+        <v-container
+        fluid style="width:500px"
+        >
+            <v-form
+                ref="form"
+                v-model="valid"
+                lazy-validation
+            >
+                <v-text-field
+                v-model="name"
+                :rules="nameRules"
+                label="Name"
+                required
+                ></v-text-field>
+
+                <v-text-field
+                v-model="email"
+                :rules="emailRules"
+                label="E-mail"
+                required
+                ></v-text-field>
+                
+                
+                <!-- @click="loginUser"  -->
+                <v-btn
+                color="primary"
+                >
+                Login
+                </v-btn>
+            </v-form>
+        </v-container>
+    </div>
 </template>
 
 <script>
-import { onBeforeMount } from 'vue';
-import {useRouter, useRoute} from 'vue-router';
-import firebase from "firebase/compat/app";
-
 export default {
-    setup () {
-        const router = useRouter();
-        const route = useRoute();
+    
 
-        onBeforeMount(() => {
-            firebase.auth().onAuthStateChanged((user) => {
-                if (!user) {
-                    router.replace('/login')
-
-                } else if (route.path == "/login")
-            {
-                router.replace('/help');
-            }
-            })
-        });
-    }
 }
-
 </script>
 
-<style>
+<style scoped>
+
+.login {
+    margin-top: 40px;
+    text-align: center;
+}
+
 
 </style>
+
+method: {
+    getUser(){
+        fetch('', {
+            method: GET,
+            headers: {
+                "Content-Type":"application/json"
+                }
+            })
+            .then(resp => resp.json())
+            .then(data => {
+                console.log(data);
+            }) 
+            .catch(error => {
+                console.log(error)
+        })
+    }
+}

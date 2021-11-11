@@ -42,15 +42,17 @@ export default {
 <style>
 .bdashboard h1 {
   text-align: center;
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 .afsprakendash {
-  width: 500px;
+  width: 800px;
   float: right;
-  margin-right: 3em;
+  margin-right: 4em;
 }
 .tabeldash {
   width: 500px;
   float: left;
-  margin-left: 3em;
+  margin-left: 4em;
 }
 </style>

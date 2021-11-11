@@ -2,7 +2,7 @@
     <v-container>
         <v-card
             class="mx-auto"
-            max-width="500"
+            max-width="1000"
         >
             <v-toolbar
       color="#006027"

@@ -20,10 +20,10 @@
             <thead>
                 <tr>
                 <th class="text-left">
-                    Name
+                    Naam
                 </th>
                 <th class="text-left">
-                    Calories
+                    Afdeling
                 </th>
                 </tr>
             </thead>
@@ -51,44 +51,44 @@ export default {
       return {
         desserts: [
           {
-            name: 'Frozen Yogurt',
-            calories: 159,
+            name: 'Henk de Vries',
+            calories: 'A',
           },
           {
-            name: 'Ice cream sandwich',
-            calories: 237,
+            name: 'Adriana van Volhoven',
+            calories: 'C',
           },
           {
-            name: 'Eclair',
-            calories: 262,
+            name: 'Emma van Vught',
+            calories: 'D',
           },
           {
-            name: 'Cupcake',
-            calories: 305,
+            name: 'Daan Berghuis',
+            calories: 'B',
           },
           {
-            name: 'Gingerbread',
-            calories: 356,
+            name: 'Freek Someren',
+            calories: 'D',
           },
           {
-            name: 'Jelly bean',
-            calories: 375,
+            name: 'Karen de boer',
+            calories: 'C',
           },
           {
-            name: 'Lollipop',
-            calories: 392,
+            name: 'Hidde de Lange',
+            calories: 'A',
           },
           {
-            name: 'Honeycomb',
-            calories: 408,
+            name: 'Harmen Pastoor',
+            calories: 'A',
           },
           {
-            name: 'Donut',
-            calories: 452,
+            name: 'Sanne Kok',
+            calories: 'B',
           },
           {
-            name: 'KitKat',
-            calories: 518,
+            name: 'Loraine Voskuilen',
+            calories: 'C',
           },
         ],
       }

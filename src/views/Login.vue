@@ -2,7 +2,7 @@
   <div class='html'>
   <Header />
   <div class='login'>    
-      <h1>Login pagina</h1>
+      <Loginform />
     </div>
     <Footer />
   </div>
@@ -12,20 +12,18 @@
 
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import Loginform from '../components/Loginform'
 
 export default {
   name: 'login',
   components: {
       Footer,
-      Header
+      Header,
+      Loginform
   }
 }
 </script>
 
 <style scoped>
-
-.html{
-  height: 100%;
-}
 
 </style>
