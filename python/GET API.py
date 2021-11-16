@@ -43,12 +43,12 @@ def ontimedb():
         database=database)
 
 
-@app.route("/client", methods = ["GET"])
+@app.route("/login", methods = ["GET"])
 def get_table_detail():
     connection = ontimedb()
     cursor = connection.cursor()
     cursor.execute("""SELECT *
-    FROM client""")
+    FROM people""")
     
     results = cursor.fetchall()
     return jsonify(results), 200

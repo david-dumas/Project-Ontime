@@ -1,6 +1,6 @@
 import mysql.connector
 
-print("enter client id: " )
+print("enter people id: " )
 x = input()
 
 def get_client_detail(id):
@@ -8,8 +8,8 @@ def get_client_detail(id):
         ontimedb = mysql.connector.connect(
             host="145.89.192.95",
             database="ontime",
-            user="ontime",
-            password="ontime1!")
+            user="dbuser",
+            password="Dbuser123!")
 
         cursor = ontimedb.cursor()
         sql_select_query = """SELECT * FROM people WHERE id = %s"""
