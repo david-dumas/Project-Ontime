@@ -14,27 +14,31 @@
         fluid style="width:500px"
         >
             <v-form
+                @submit.prevent="Loginform"
+                method="POST"
                 ref="form"
                 v-model="valid"
                 lazy-validation
             >
                 <v-text-field
-                v-model="name"
-                :rules="nameRules"
-                label="Name"
+                id="email"
+                v-model="formData.email"
+                label="E-mail"
                 required
                 ></v-text-field>
 
                 <v-text-field
-                v-model="email"
-                :rules="emailRules"
-                label="E-mail"
+                id="password"
+                v-model="formData.password"
+                label="Password"
                 required
                 ></v-text-field>
+
+                <!-- Moet er een 'is dit een admin account' knop komen? -->
                 
-                
-                <!-- @click="loginUser"  -->
                 <v-btn
+                type='submit'
+                @click="submit"
                 color="primary"
                 >
                 Login
@@ -46,9 +50,35 @@
 
 <script>
 export default {
+    name: "Loginform",
+    data(){
+        return {
+            formData: {
+                email: "",
+                password: "",
+            },
+        }
+    },
+    methods: {
+        Loginform(){
+             fetch(('http://127.0.0.1:5000/login_request', this.formData),{
+                method: 'POST',
+                headers: 
+                    {"Content-Type":"application/json"},
+                body: JSON.stringify
+                })
+                .then(resp => resp.json())
+                .then(json => {console.log(json);
+                }) 
+                .catch(error => {console.log(error)
+            })
+            /* Doorverwijzen naar de dashboard pagina */
+            this.$router.push('Bdashboard');
+        }
+    }
     
-
 }
+
 </script>
 
 <style scoped>
@@ -58,23 +88,5 @@ export default {
     text-align: center;
 }
 
-
 </style>
 
-method: {
-    getUser(){
-        fetch('', {
-            method: GET,
-            headers: {
-                "Content-Type":"application/json"
-                }
-            })
-            .then(resp => resp.json())
-            .then(data => {
-                console.log(data);
-            }) 
-            .catch(error => {
-                console.log(error)
-        })
-    }
-}
