@@ -1,9 +1,16 @@
 import mysql.connector
+import flask
+from flask import jsonify,request
+from flask_cors import CORS
 
-print("enter people id: " )
-x = input()
+app = flask.Flask(__name__)
+CORS(app)
+app.config["DEBUG"] = True
 
-def get_client_detail(id):
+@app.route("/people", methods = ["POST"])
+def get_people_detail():
+    people = request.get_json(force=True)
+    person = people["id"]
     try:
         ontimedb = mysql.connector.connect(
             host="145.89.192.95",
@@ -11,19 +18,20 @@ def get_client_detail(id):
             user="dbuser",
             password="Dbuser123!")
 
-        cursor = ontimedb.cursor()
-        sql_select_query = """SELECT * FROM people WHERE id = %s"""
-        cursor.execute(sql_select_query, (id,))
-        record = cursor.fetchall()
-        print(record)
+        dbcursor = ontimedb.cursor()
+        sql_people_query = """SELECT * FROM people 
+                                WHERE id = %s"""
+        dbcursor.execute(sql_people_query, (person,))
+        record = dbcursor.fetchall()
+        return jsonify(record), 200
 
     except mysql.connector.Error as error:
         print("Failed to get record from MySQL table: {}".format(error))
 
     finally:
         if ontimedb.is_connected():
-            cursor.close()
-            ontimedb.close()
+            dbcursor.close()
             print("MySQL connection is closed")
 
-get_client_detail(x)
+if __name__ == '__main__':
+    app.run(debug=True)
