@@ -2,6 +2,7 @@
     <div class="login">
         <br>
         <br>
+         <!-- Bartimeus logo -->
         <div class="image">
             <img src='../assets/logo-Bartiméus.png' width="150">
         </div>
@@ -10,6 +11,7 @@
         <br>
         <h3>Login</h3>
         
+        <!-- Login form -->
         <v-container
         fluid style="width:500px"
         >
@@ -22,23 +24,21 @@
             >
                 <v-text-field
                 id="email"
-                v-model="formData.email"
+                v-model="email"
                 label="E-mail"
                 required
                 ></v-text-field>
 
                 <v-text-field
                 id="password"
-                v-model="formData.password"
+                v-model="password"
                 label="Password"
                 required
                 ></v-text-field>
 
                 <!-- Moet er een 'is dit een admin account' knop komen? -->
-                
                 <v-btn
-                type='submit'
-                @click="submit"
+                type="submit"
                 color="primary"
                 >
                 Login
@@ -53,30 +53,34 @@ export default {
     name: "Loginform",
     data(){
         return {
-            formData: {
                 email: "",
                 password: "",
-            },
         }
     },
     methods: {
-        Loginform(){
-             fetch(('http://127.0.0.1:5000/login_request', this.formData),{
+        async Loginform(){
+            const data = {
+                email: this.email,
+                password: this.password
+            };
+            /* Ophalen gebruiker uit de database */
+            const response = await fetch('http://localhost:5000/login_request', {
                 method: 'POST',
                 headers: 
                     {"Content-Type":"application/json"},
-                body: JSON.stringify
+                body: JSON.stringify(data)
                 })
-                .then(resp => resp.json())
-                .then(json => {console.log(json);
-                }) 
-                .catch(error => {console.log(error)
-            })
-            /* Doorverwijzen naar de dashboard pagina */
-            this.$router.push('Bdashboard');
-        }
+                console.log(response)
+
+                /* if statement om te kijken of de backend een true of false meegeeft */
+                if(response.status == 200){ 
+                    let redirect_url = this.$route.query.redirect || '/begeleider-dashboard'
+                    this.$router.push(redirect_url) 
+                } else {
+                    alert("Verkeerde inlog gegevens")
+                }        
+        }   
     }
-    
 }
 
 </script>
@@ -88,5 +92,4 @@ export default {
     text-align: center;
 }
 
-</style>
-
+</style>                

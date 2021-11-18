@@ -1,6 +1,6 @@
 <template>
   <div class='html'>
-  <Header />
+  <Loginheader />
   <div class='login'>    
       <Loginform />
     </div>
@@ -10,7 +10,7 @@
 
 <script>
 
-import Header from '../components/Header'
+import Loginheader from '../components/Loginheader'
 import Footer from '../components/Footer'
 import Loginform from '../components/Loginform'
 
@@ -18,7 +18,7 @@ export default {
   name: 'login',
   components: {
       Footer,
-      Header,
+      Loginheader,
       Loginform
   }
 }
