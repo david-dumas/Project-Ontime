@@ -244,7 +244,7 @@ import { db } from '@/main';
           this.end = "";
           this.color  = "";
         } else{
-          alert('Name, start and date are required')
+          alert("Name, start and date are required")
         }
       },
       
@@ -264,7 +264,7 @@ import { db } from '@/main';
       /* ----------- AFSPRAAK VERWIJDEREN -----------*/
 
       async deleteEvent(ev){
-        await db.collection('calEvent')
+        await db.collection("calEvent")
         .doc(ev)
         .delete();
 
@@ -273,10 +273,10 @@ import { db } from '@/main';
       },
       viewDay ({ date }) {
         this.focus = date
-        this.type = 'day'
+        this.type = "day"
       },
       setToday () {
-        this.focus = ''
+        this.focus = ""
       },
       prev () {
         this.$refs.calendar.prev()
