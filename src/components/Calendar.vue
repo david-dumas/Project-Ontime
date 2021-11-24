@@ -87,7 +87,12 @@
       <v-card>
         <v-container>
           <v-form @submit.prevent="addEvent">
-            <v-text-field v-model="name" type="text" label="Naam afspraak (verplicht)"></v-text-field>
+
+            <!-- Toevoegen cliënt aan afspraak via form -->
+
+            <v-select v-model="clients" :items="clients" item-text="lastname" label="Client"> </v-select>
+
+            <v-text-field v-model="name" type="text" label="Naam afspraak"></v-text-field>
 
             <v-text-field v-model="details" type="text" label="Beschrijving"></v-text-field>
 
@@ -96,6 +101,7 @@
             <v-text-field v-model="end" type="datetime-local" label="Eind datum (verplicht)"></v-text-field>
 
             <v-text-field v-model="color" type="color" label="Kleur (klik voor kleur menu)"></v-text-field>
+
           <v-btn 
           type="submit" 
           color="primary" 
@@ -153,6 +159,7 @@
               <form v-if="currentlyEditting !== selectedEvent.id">
                 {{selectedEvent.details}}
               </form>
+              
 
               <form v-else>
                 <textarea-autosize
@@ -170,7 +177,7 @@
               <v-btn text color="secondary" @click="selectedOpen = false">Annuleren</v-btn>
 
               <v-btn text v-if="currentlyEditting !== selectedEvent.id" 
-              @click.prevent="editEvent(selectedEvent)">Edit</v-btn>
+              @click.prevent="editEvent(selectedEvent)">Aanpassen</v-btn>
 
               <v-btn text v-else @click.prevent="updateEvent(selectedEvent)">Opslaan</v-btn>
 
@@ -180,6 +187,8 @@
       </v-sheet>
     </v-col>
   </v-row>
+  
+        
 </template>
 
 <script>
@@ -187,6 +196,7 @@ import { db } from '@/main';
 
   export default {
     data: () => ({
+      clients: [],
       today: new Date().toISOString().substr(0, 10),
       focus: new Date().toISOString().substr(0, 10),
       type: "month",
@@ -207,10 +217,11 @@ import { db } from '@/main';
       selectedOpen: false,
       events: [],
       dialog: false,
-
     }),
+
     mounted() {
       this.getEvents();
+      this.getClients();
     },
 
     /* ----------- AFSPRAKEN OPHALEN -----------*/
@@ -226,6 +237,20 @@ import { db } from '@/main';
         });
         this.events = events;
       },
+    
+      /* -------- OPHALEN CLIENTEN UIT DE DATABASE OM TE LADEN IN SELECT COMPONENT--------- */
+
+      async getClients(){
+        let snapshot = await db.collection("cliëntenDB").get();
+        let clients = [];
+        snapshot.forEach(doc => {
+          let appData = doc.data();
+          appData.id = doc.id;
+          clients.push(appData);
+        });
+        this.clients = clients;
+      },
+
       /* ----------- AFSPRAAK TOEVOEGEN -----------*/
 
       async addEvent(){
@@ -235,7 +260,9 @@ import { db } from '@/main';
             details: this.details,
             start: this.start,
             end: this.end,
-            color: this.color
+            color: this.color,
+            /* CLIENT DEFINIEREN */
+            clients: this.clients,
           });
           this.getEvents();
           this.name = "";
@@ -243,8 +270,10 @@ import { db } from '@/main';
           this.start = "";
           this.end = "";
           this.color  = "";
+          /* CLIENT TOEVOEGEN */
+          this.clients= "";
         } else{
-          alert("Name, start and date are required")
+          alert("Naam, datum en tijd zijn verplicht")
         }
       },
       

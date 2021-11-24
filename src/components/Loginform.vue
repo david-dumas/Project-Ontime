@@ -36,13 +36,22 @@
                 required
                 ></v-text-field>
 
-                <!-- Moet er een 'is dit een admin account' knop komen? -->
                 <v-btn
                 type="submit"
                 color="primary"
                 >
                 Login
                 </v-btn>
+
+
+                 <!-- Moet er een 'is dit een admin account' knop komen? 
+                
+                <p>Is dit een Admin account?</p>
+                <input type="checkbox" id="checkbox" v-model="checked">
+                <label for="checkbox">{{ checked }}</label>
+
+                -->
+
             </v-form>
         </v-container>
     </div>
@@ -90,6 +99,10 @@ export default {
 .login {
     margin-top: 40px;
     text-align: center;
+}
+
+.v-btn {
+    margin-right: 1em;
 }
 
 </style>                
