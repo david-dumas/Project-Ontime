@@ -1,29 +1,27 @@
 <template>
-<div class="bdashboard">
-    <Header />
-  <h1>
-    Dashboard
-  </h1>
+  <div class="bdashboard">
+      <Header />
+        <h1>
+        Dashboard
+        </h1>
 
-    <div class="tabeldash">
+      <div class="tabeldash">
+        <Tabeldash />
+      </div>
 
-    <Tabeldash />
+      <div class="afsprakendash">
+        <Afsprakendash />
+      </div>
+    
+    <Footer />
 
-    </div>
-
-    <div class="afsprakendash">
-
-    <Afsprakendash />
-
-    </div>
-  
-  <Footer />
-
-</div>
-
+  </div>
 </template>
 
 <script>
+//importeren axios 
+//import axios from 'axios'
+
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Afsprakendash from '../components/Afsprakendash.vue';
@@ -36,7 +34,20 @@ export default {
         Footer,
         Afsprakendash,
         Tabeldash
-    }
+    },
+
+    /* OPHALEN GEBRUIKER IN DATABASE, AUTHORIZATION CHECKEN UIT LOCAL STORAGE
+    
+    async created() {
+      const response = await axios.get('https:......./user', {
+        headers: {
+          Authorizations: 'Bearer' + localStorage.getItem('token')
+        }
+      });
+
+      console.log(response)
+    },
+     */
 }
 </script>
 

@@ -58,6 +58,7 @@
 </template>
 
 <script>
+
 export default {
     name: "Loginform",
     data(){
@@ -72,14 +73,16 @@ export default {
                 email: this.email,
                 password: this.password
             };
+
             /* Ophalen gebruiker uit de database */
             const response = await fetch('http://localhost:5000/login_request', {
                 method: 'POST',
                 headers: 
                     {"Content-Type":"application/json"},
                     credentials: "include",
-                    body: JSON.stringify(data)
+                    body: JSON.stringify(data),
                 });
+
                 console.log(response)
 
                 /* JWT token opslaan in local storage */
@@ -90,11 +93,28 @@ export default {
                     let redirect_url = this.$route.query.redirect || '/begeleider-dashboard'
                     this.$router.push(redirect_url) 
                 } else {
+                    localStorage.removeItem('token', response.data.token)
                     alert("Verkeerde inlog gegevens")
                 }        
-        }   
+        }
     }
 }
+
+// isAuthenticated variabele aanmaken
+//let isAuthenticated = true
+
+/* function routerAuthCheck() {
+        if (response == 200){
+            isAuthenticated = true
+        } else {
+            isAuthenticated = false
+        }
+    } */
+
+    // zet authcheck naar true zodat de pagina kan worden geladen.
+                    // isAuthenticated = true;
+
+//export { isAuthenticated }
 
 </script>
 

@@ -18,7 +18,7 @@ const routes = [
     path: '/begeleider-dashboard',
     name: 'Bdashboard',
     component: Bdashboard,
-    /* protected route aanmaken zodat gebruiker niet vanaf adresbalk de inlog kan omzeilen */
+    /* Navigation guard zodat gebruiker niet vanaf adresbalk de inlog kan omzeilen */
     meta: {
       requiresAuth: true
     }
@@ -51,5 +51,21 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+// Voordat de router de component laadt, wordt er gecontroleerd of de route een meta field heeft met requiresAuth.
+/* router.beforeEach((to, from, next) => {
+
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (isAuthenticated == true){
+      next()
+    }
+
+  } 
+  else {
+    let redirect_url = this.$route.query.redirect || '/login'
+    this.$router.push(redirect_url)
+  }
+  next()
+}); */
 
 export default router

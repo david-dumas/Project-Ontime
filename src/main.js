@@ -25,7 +25,11 @@ firebase.initializeApp({
 export const db = firebase.firestore();
 
 new Vue({
+  //router toevoegen aan app
   router,
+  //store toevoegen aan app
+  store,
+  //vuetify toevoegen aan app
   vuetify,
   render: h => h(App)
 }).$mount('#app')
