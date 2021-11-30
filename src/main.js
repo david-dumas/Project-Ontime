@@ -5,6 +5,9 @@ import vuetify from './plugins/vuetify'
 import firebase from "firebase/compat/app";
 import VueTextareaAutosize from 'vue-textarea-autosize';
 import 'firebase/compat/firestore';
+import store from '../src/store/store'
+
+Vue.use(store)
 
 Vue.use(VueTextareaAutosize)
 
