@@ -30,6 +30,7 @@
                 ></v-text-field>
 
                 <v-text-field
+                type='password'
                 id="password"
                 v-model="password"
                 label="Password"
@@ -42,7 +43,6 @@
                 >
                 Login
                 </v-btn>
-
 
                  <!-- Moet er een 'is dit een admin account' knop komen? 
                 
@@ -77,11 +77,15 @@ export default {
                 method: 'POST',
                 headers: 
                     {"Content-Type":"application/json"},
-                body: JSON.stringify(data)
-                })
+                    credentials: "include",
+                    body: JSON.stringify(data)
+                });
                 console.log(response)
 
-                /* if statement om te kijken of de backend een true of false meegeeft */
+                /* JWT token opslaan in local storage */
+                localStorage.setItem('token', response.data.token)
+
+                /* if statement om te kijken of de gebruiker authenticated is */
                 if(response.status == 200){ 
                     let redirect_url = this.$route.query.redirect || '/begeleider-dashboard'
                     this.$router.push(redirect_url) 

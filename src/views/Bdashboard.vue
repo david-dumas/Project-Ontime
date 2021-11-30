@@ -28,6 +28,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Afsprakendash from '../components/Afsprakendash.vue';
 import Tabeldash from '../components/Tabeldash';
+
 export default {
     name: 'Bdashboard',
     components: {
@@ -46,12 +47,12 @@ export default {
   margin-bottom: 1em;
 }
 .afsprakendash {
-  width: 800px;
+  width: 700px;
   float: right;
   margin-right: 4em;
 }
 .tabeldash {
-  width: 500px;
+  width: 700px;
   float: left;
   margin-left: 4em;
 }

@@ -90,7 +90,7 @@
 
             <!-- Toevoegen cliënt aan afspraak via form -->
 
-            <v-select v-model="clients" :items="clients" item-text="lastname" label="Client"> </v-select>
+            <v-select v-model="client" :items="client" item-text="lastname" label="Client"> </v-select>
 
             <v-text-field v-model="name" type="text" label="Naam afspraak"></v-text-field>
 
@@ -196,7 +196,6 @@ import { db } from '@/main';
 
   export default {
     data: () => ({
-      clients: [],
       today: new Date().toISOString().substr(0, 10),
       focus: new Date().toISOString().substr(0, 10),
       type: "month",
@@ -242,13 +241,14 @@ import { db } from '@/main';
 
       async getClients(){
         let snapshot = await db.collection("cliëntenDB").get();
-        let clients = [];
+        let client = [];
         snapshot.forEach(doc => {
           let appData = doc.data();
           appData.id = doc.id;
-          clients.push(appData);
+          client.push(appData);
         });
-        this.clients = clients;
+        this.client = client;
+        console.log(client)
       },
 
       /* ----------- AFSPRAAK TOEVOEGEN -----------*/
@@ -262,7 +262,7 @@ import { db } from '@/main';
             end: this.end,
             color: this.color,
             /* CLIENT DEFINIEREN */
-            clients: this.clients,
+            client: this.client,
           });
           this.getEvents();
           this.name = "";
@@ -271,7 +271,7 @@ import { db } from '@/main';
           this.end = "";
           this.color  = "";
           /* CLIENT TOEVOEGEN */
-          this.clients= "";
+          this.client= "";
         } else{
           alert("Naam, datum en tijd zijn verplicht")
         }

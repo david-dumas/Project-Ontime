@@ -4,7 +4,6 @@ import Login from '../views/Login';
 import Bdashboard from '../views/Bdashboard';
 import Adashboard from '../views/Adashboard';
 import Agenda from '../views/Agenda';
-import Instellingen from '../views/Instellingen';
 import Help from '../views/Help';
 
 Vue.use(VueRouter)
@@ -13,27 +12,32 @@ const routes = [
   {
     path: '/',
     name: 'Login',
-    component: Login
+    component: Login,
   },
   {
     path: '/begeleider-dashboard',
     name: 'Bdashboard',
-    component: Bdashboard
+    component: Bdashboard,
+    /* protected route aanmaken zodat gebruiker niet vanaf adresbalk de inlog kan omzeilen */
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/admin-dashboard',
     name: 'Adashboard',
-    component: Adashboard
+    component: Adashboard,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/agenda',
     name: 'Agenda',
-    component: Agenda
-  },
-  {
-    path: '/instellingen',
-    name: 'Instellingen',
-    component: Instellingen
+    component: Agenda,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/help',

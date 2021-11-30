@@ -1,97 +1,59 @@
 <template>
-    <v-container>
-  <v-card
-    class="mx-auto"
-    max-width="500"
-  >
 
-    <v-toolbar
-      color="#006027"
-      dark
-    >
-    <v-toolbar-title>Clienten</v-toolbar-title>
+  <v-simple-table>
+    <template v-slot:default>
+      <thead>
+        <tr>
+          <th class="text-left">
+            Name
+          </th>
+          <th class="text-left">
+            Calories
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="item in client"
+          :key="item.firstname"
+        >
+          <td>{{ item.firstname }}</td>
+          <td>{{ item.lastname }}</td>
+        </tr>
+      </tbody>
+    </template>
+  </v-simple-table>
 
-    </v-toolbar>
-
-    <v-container fluid>
-
-        <v-simple-table>
-            <template v-slot:default>
-            <thead>
-                <tr>
-                <th class="text-left">
-                    Naam
-                </th>
-                <th class="text-left">
-                    Afdeling
-                </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr
-                v-for="item in desserts"
-                :key="item.name"
-                >
-                <td>{{ item.name }}</td>
-                <td>{{ item.calories }}</td>
-                </tr>
-            </tbody>
-            </template>
-        </v-simple-table>
-      
-    </v-container>
-  </v-card>
-
-    </v-container>
+  
 </template>
 
 <script>
+import { db } from "@/main";
 export default {
-    data () {
-      return {
-        desserts: [
-          {
-            name: 'Henk de Vries',
-            calories: 'A',
-          },
-          {
-            name: 'Adriana van Volhoven',
-            calories: 'C',
-          },
-          {
-            name: 'Emma van Vught',
-            calories: 'D',
-          },
-          {
-            name: 'Daan Berghuis',
-            calories: 'B',
-          },
-          {
-            name: 'Freek Someren',
-            calories: 'D',
-          },
-          {
-            name: 'Karen de boer',
-            calories: 'C',
-          },
-          {
-            name: 'Hidde de Lange',
-            calories: 'A',
-          },
-          {
-            name: 'Harmen Pastoor',
-            calories: 'A',
-          },
-          {
-            name: 'Sanne Kok',
-            calories: 'B',
-          },
-          {
-            name: 'Loraine Voskuilen',
-            calories: 'C',
-          },
-        ],
-      }
+  name: "Tabeldash",
+  components: {
+  },
+  data() {
+    return {
+    };
+  },
+async created() {
+    this.getClients();
+  },
+  methods: {
+    async getClients() {
+      let snapshot = await db.collection("cliëntenDB").get();
+      let client = [];
+      snapshot.forEach((doc) => {
+        let appData = doc.data();
+        appData.id = doc.id;
+        client.push(appData);
+      });
+      this.client = client;
+      this.isLoading = false;
+      console.log(client)
     },
-  }
+  },
+};
 </script>
+

@@ -32,7 +32,7 @@
             depressed
             color="white"
             >
-            <router-link to="/" active-class="active" tag="button" exact class="nav-btn">
+            <router-link to="/" active-class="active" tag="button" exact class="nav-btn" @click="logout">
                         Log uit
             </router-link>
         </v-btn>
