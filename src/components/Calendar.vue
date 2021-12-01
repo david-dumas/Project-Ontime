@@ -192,7 +192,6 @@
 </template>
 
 <script>
-import { db } from '@/main';
 
   export default {
     data: () => ({

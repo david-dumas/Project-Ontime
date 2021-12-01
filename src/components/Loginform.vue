@@ -24,7 +24,7 @@
             >
                 <v-text-field
                 id="email"
-                v-model="email"
+                v-model="mail"
                 label="E-mail"
                 required
                 ></v-text-field>
@@ -63,19 +63,19 @@ export default {
     name: "Loginform",
     data(){
         return {
-                email: "",
+                mail: "",
                 password: "",
         }
     },
     methods: {
         async Loginform(){
             const data = {
-                email: this.email,
+                mail: this.mail,
                 password: this.password
             };
 
             /* Ophalen gebruiker uit de database */
-            const response = await fetch('http://localhost:5000/login_request', {
+            const response = await fetch('http://145.89.188.180:5000/loginrequest', {
                 method: 'POST',
                 headers: 
                     {"Content-Type":"application/json"},
@@ -85,15 +85,19 @@ export default {
 
                 console.log(response)
 
-                /* JWT token opslaan in local storage */
-                localStorage.setItem('token', response.data.token)
-
                 /* if statement om te kijken of de gebruiker authenticated is */
                 if(response.status == 200){ 
+
+                    /* JWT token opslaan in local storage */
+                    //localStorage.setItem('token', response.data.token)
+
+                    //Commit naar de store dat de gebruiker is ingelogd
+                    this.$store.commit(setAuthentication, true);
+
                     let redirect_url = this.$route.query.redirect || '/begeleider-dashboard'
                     this.$router.push(redirect_url) 
                 } else {
-                    localStorage.removeItem('token', response.data.token)
+                    //localStorage.removeItem('token', response.data.token)
                     alert("Verkeerde inlog gegevens")
                 }        
         }

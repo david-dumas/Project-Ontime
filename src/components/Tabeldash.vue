@@ -29,6 +29,7 @@
 
 <script>
 import { db } from "@/main";
+
 export default {
   name: "Tabeldash",
   components: {

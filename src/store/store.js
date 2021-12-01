@@ -5,19 +5,18 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        //isAuthenticated = false,
+        isAuthenticated = false,
 
-        //Is dit nodig?
-        //token: localStorage.getItem('token) || '',
     },
     getters: {
 
     },
     actions: {
-        //setAuth: () => //commit
 
     },
     mutations: {
-
+        setAuthentication (state, status) {
+            state.isAuthenticated = false;
+        }
     }
 })

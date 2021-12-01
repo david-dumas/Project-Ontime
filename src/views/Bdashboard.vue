@@ -19,7 +19,6 @@
 </template>
 
 <script>
-//importeren axios 
 //import axios from 'axios'
 
 import Header from '../components/Header';
@@ -37,7 +36,7 @@ export default {
     },
 
     /* OPHALEN GEBRUIKER IN DATABASE, AUTHORIZATION CHECKEN UIT LOCAL STORAGE
-    
+
     async created() {
       const response = await axios.get('https:......./user', {
         headers: {
