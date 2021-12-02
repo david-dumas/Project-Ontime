@@ -1,8 +1,4 @@
-import csv
-import datetime
-import flask
-import jwt
-import mysql.connector
+import csv, datetime, flask, jwt, mysql.connector
 from flask_login import LoginManager, UserMixin
 from flask import jsonify, request
 from flask_cors import CORS
@@ -12,7 +8,7 @@ CORS(app)
 app.config["DEBUG"] = True
 
 
-with open(r"C:\Users\caspe\OneDrive\Documents\GitHub\Project-Ontime\txt\mysql.txt") as f1:
+with open(r".\txt\mysql.txt") as f1:
     data=csv.reader(f1,delimiter=",")
     for row in data:
             host=row[0]
@@ -21,10 +17,10 @@ with open(r"C:\Users\caspe\OneDrive\Documents\GitHub\Project-Ontime\txt\mysql.tx
             password=row[3]
 
 ontimedb = mysql.connector.connect(
-    host="145.89.192.95",
-    database="ontime",
-    user="dbuser",
-    password="Dbuser123!")
+    host=host,
+    database=database,
+    user=user,
+    password=password)
 
 
 #David
@@ -107,7 +103,7 @@ def get_contact_detail():
     try:
         dbcursor = ontimedb.cursor()
         sql_people_query = """SELECT * FROM contact 
-                                WHERE id = %s"""
+                                WHERE firstname = %s AND surname = %s"""
         dbcursor.execute(sql_people_query, (firstname, surname,))
         record = dbcursor.fetchall()
         return jsonify(record), 200
@@ -145,4 +141,4 @@ def login():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug = True)
