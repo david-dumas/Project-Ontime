@@ -3,9 +3,9 @@ import Vue from 'vue';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
     state: {
-        isAuthenticated = false,
+        isAuthenticated: false,
 
     },
     getters: {
@@ -15,8 +15,10 @@ export default new Vuex.Store({
 
     },
     mutations: {
-        setAuthentication (state, status) {
-            state.isAuthenticated = false;
+        setAuthentication(state, status) {
+            state.isAuthenticated = status;
         }
     }
 })
+
+export default store

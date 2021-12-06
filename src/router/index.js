@@ -5,6 +5,7 @@ import Bdashboard from '../views/Bdashboard';
 import Adashboard from '../views/Adashboard';
 import Agenda from '../views/Agenda';
 import Help from '../views/Help';
+import store from '../store/store'
 
 Vue.use(VueRouter)
 
@@ -20,24 +21,36 @@ const routes = [
     component: Bdashboard,
     /* Navigation guard zodat gebruiker niet vanaf adresbalk de inlog kan omzeilen */
     beforeEnter: (to, from, next) => {
-      
-    }
+      if (store.state.isAuthenticated == false) {
+        next('/');
+      } else {
+        next();
+      }
+    },
   },
   {
     path: '/admin-dashboard',
     name: 'Adashboard',
     component: Adashboard,
-    meta: {
-      requiresAuth: true
-    }
+    beforeEnter: (to, from, next) => {
+      if (store.state.isAuthenticated == false) {
+        next('/');
+      } else {
+        next();
+      }
+    },
   },
   {
     path: '/agenda',
     name: 'Agenda',
     component: Agenda,
-    meta: {
-      requiresAuth: true
-    }
+    beforeEnter: (to, from, next) => {
+      if (store.state.isAuthenticated == false) {
+        next('/');
+      } else {
+        next();
+      }
+    },
   },
   {
     path: '/help',
@@ -52,12 +65,14 @@ const router = new VueRouter({
   routes
 });
 
-// Voordat de router de component laadt, wordt er gecontroleerd of de route een meta field heeft met requiresAuth.
+export default router
+
+/* // Voordat de router de component laadt, wordt er gecontroleerd of de route een meta field heeft met requiresAuth.
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (localStorage.getItem("token") == null) {
       next({
-        //redirect naar login page als gebruiker geen token heeft
+        //redirect naar login page als gebruiker geen token heeftß
         path: "/",
         //relative url omzetten naar full url
         params: { nextUrl: to.fullPath },
@@ -77,28 +92,5 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
-});
-
-
-
-
-
-
-
-
-/* router.beforeEach((to, from, next) => {
-
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (isAuthenticated == true){
-      next()
-    }
-
-  } 
-  else {
-    let redirect_url = this.$route.query.redirect || '/login'
-    this.$router.push(redirect_url)
-  }
-  next()
 }); */
-
-export default router
+ 

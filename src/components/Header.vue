@@ -54,6 +54,19 @@
 export default {
     name: 'Header'
 }
+
+/* Loguit functie die kan worden aangeroepen na klikken log uit knop 
+
+logout({commit}){
+  return new Promise((resolve, reject) => {
+    commit('logout')
+    localStorage.removeItem('token')
+    delete axios.defaults.headers.common['Authorization']
+    resolve()
+  })
+}
+
+*/
 </script>
 
 <style>

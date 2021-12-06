@@ -24,7 +24,7 @@
             >
                 <v-text-field
                 id="email"
-                v-model="mail"
+                v-model="email"
                 label="E-mail"
                 required
                 ></v-text-field>
@@ -63,19 +63,19 @@ export default {
     name: "Loginform",
     data(){
         return {
-                mail: "",
+                email: "",
                 password: "",
         }
     },
     methods: {
         async Loginform(){
             const data = {
-                mail: this.mail,
+                email: this.email,
                 password: this.password
             };
 
             /* Ophalen gebruiker uit de database */
-            const response = await fetch('http://145.89.188.180:5000/loginrequest', {
+            const response = await fetch('http://127.0.0.1:5000/login_request', {
                 method: 'POST',
                 headers: 
                     {"Content-Type":"application/json"},
@@ -90,12 +90,14 @@ export default {
 
                     /* JWT token opslaan in local storage */
                     //localStorage.setItem('token', response.data.token)
+                    //console log response.data
 
                     //Commit naar de store dat de gebruiker is ingelogd
-                    this.$store.commit(setAuthentication, true);
+                    this.$store.commit("setAuthentication", true);
 
                     let redirect_url = this.$route.query.redirect || '/begeleider-dashboard'
                     this.$router.push(redirect_url) 
+                    
                 } else {
                     //localStorage.removeItem('token', response.data.token)
                     alert("Verkeerde inlog gegevens")
@@ -103,22 +105,6 @@ export default {
         }
     }
 }
-
-// isAuthenticated variabele aanmaken
-//let isAuthenticated = true
-
-/* function routerAuthCheck() {
-        if (response == 200){
-            isAuthenticated = true
-        } else {
-            isAuthenticated = false
-        }
-    } */
-
-    // zet authcheck naar true zodat de pagina kan worden geladen.
-                    // isAuthenticated = true;
-
-//export { isAuthenticated }
 
 </script>
 
@@ -133,4 +119,4 @@ export default {
     margin-right: 1em;
 }
 
-</style>                
+</style>
