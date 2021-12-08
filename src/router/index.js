@@ -23,6 +23,8 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if (store.state.isAuthenticated == false) {
         next('/');
+      } if (localStorage.getItem("token") == null) {
+        next('/');
       } else {
         next();
       }
@@ -34,6 +36,8 @@ const routes = [
     component: Adashboard,
     beforeEnter: (to, from, next) => {
       if (store.state.isAuthenticated == false) {
+        next('/');
+      } if (localStorage.getItem("token") == null) {
         next('/');
       } else {
         next();
@@ -47,7 +51,9 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if (store.state.isAuthenticated == false) {
         next('/');
-      } else {
+      } if (localStorage.getItem("token") == null) {
+        next('/');
+      }  else {
         next();
       }
     },

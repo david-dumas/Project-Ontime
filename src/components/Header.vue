@@ -52,21 +52,23 @@
 
 <script>
 export default {
-    name: 'Header'
+    name: 'Header',
+    
 }
+    
 
 /* Loguit functie die kan worden aangeroepen na klikken log uit knop 
 
 logout({commit}){
   return new Promise((resolve, reject) => {
     commit('logout')
+    this.$store.commit("setAuthentication", false);
     localStorage.removeItem('token')
-    delete axios.defaults.headers.common['Authorization']
-    resolve()
   })
 }
 
 */
+
 </script>
 
 <style>

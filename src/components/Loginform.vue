@@ -66,12 +66,13 @@ export default {
                 email: "",
                 password: "",
         }
+        
     },
     methods: {
         async Loginform(){
             const data = {
                 email: this.email,
-                password: this.password
+                password: this.password,
             };
 
             /* Ophalen gebruiker uit de database */
@@ -82,15 +83,17 @@ export default {
                     credentials: "include",
                     body: JSON.stringify(data),
                 });
-
-                console.log(response)
+                
+                console.log(data)
 
                 /* if statement om te kijken of de gebruiker authenticated is */
                 if(response.status == 200){ 
 
+                    const auth = await response.json();
+
                     /* JWT token opslaan in local storage */
-                    //localStorage.setItem('token', response.data.token)
-                    //console log response.data
+                    localStorage.setItem('token', auth.token)
+                    console.log(auth.token)
 
                     //Commit naar de store dat de gebruiker is ingelogd
                     this.$store.commit("setAuthentication", true);
