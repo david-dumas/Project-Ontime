@@ -88,7 +88,32 @@ export default {
 
                     let redirect_url = this.$route.query.redirect || '/begeleider-dashboard'
                     this.$router.push(redirect_url) 
-                    
+
+                //CHECKEN OF GEBRUIKER EEN ADMIN IS NA FOUTIEVE USER AUTH
+
+                } else if(res.val == false) {
+                    const responseAdmin = await fetch('url', {
+                        method: 'POST',
+                        headers:
+                            {"Content-Type":"application/json"},
+                            credentials: "include",
+                            body: JSON.stringify(data),
+                    });
+
+                    const resAdmin = await responseAdmin.json();
+
+                    if(response.val == true){
+
+                        localStorage.setItem('token', resAdmin.token)
+
+                        this.$store.commit("setAuthentication", true);
+
+                        let redirect_url = this.$route.query.redirect || '/admin-dashboard'
+                        this.$router.push(redirect_url) 
+
+                    } else if(response.val == false){
+                        console.log("Error")
+                    }
                 } else {
                     alert("Verkeerde inlog gegevens")
                 }        
