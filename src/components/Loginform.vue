@@ -1,7 +1,6 @@
 <template>
     <div class="login">
-        <br>
-        <br>
+
          <!-- Bartimeus logo -->
         <div class="image">
             <img src='../assets/logo-Bartiméus.png' width="150">
@@ -44,14 +43,6 @@
                 Login
                 </v-btn>
 
-                 <!-- Moet er een 'is dit een admin account' knop komen? 
-                
-                <p>Is dit een Admin account?</p>
-                <input type="checkbox" id="checkbox" v-model="checked">
-                <label for="checkbox">{{ checked }}</label>
-
-                -->
-
             </v-form>
         </v-container>
     </div>
@@ -83,18 +74,15 @@ export default {
                     credentials: "include",
                     body: JSON.stringify(data),
                 });
-                
-                console.log(data)
+
+                const res = await response.json();
 
                 /* if statement om te kijken of de gebruiker authenticated is */
-                if(response.status == 200){ 
-
-                    const auth = await response.json();
+                if(res.val == true){ 
 
                     /* JWT token opslaan in local storage */
-                    localStorage.setItem('token', auth.token)
-                    console.log(auth.token)
-
+                    localStorage.setItem('token', res.token)
+                
                     //Commit naar de store dat de gebruiker is ingelogd
                     this.$store.commit("setAuthentication", true);
 
@@ -102,7 +90,6 @@ export default {
                     this.$router.push(redirect_url) 
                     
                 } else {
-                    //localStorage.removeItem('token', response.data.token)
                     alert("Verkeerde inlog gegevens")
                 }        
         }
@@ -120,6 +107,10 @@ export default {
 
 .v-btn {
     margin-right: 1em;
+}
+
+.image {
+    margin-top: 1em;
 }
 
 </style>
