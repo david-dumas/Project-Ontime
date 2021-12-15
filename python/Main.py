@@ -8,7 +8,7 @@ CORS(app)
 app.config["DEBUG"] = True
 
 
-with open(r".\python\mysql.txt") as f1:
+with open(r"python\mysql.txt") as f1:
     data=csv.reader(f1,delimiter=",")
     for row in data:
             host=row[0]
@@ -104,7 +104,7 @@ def get_contact_detail():
 
 
 @app.route("/getattendant", methods = ["POST"])
-def get_contact_detail():
+def get_attendant_detail():
     getattendant = request.get_json()
     firstname = getattendant["firstname"]
     surname = getattendant["surname"]
@@ -118,29 +118,6 @@ def get_contact_detail():
 
     except mysql.connector.Error as error:
         print("Failed to get an attendant from attendant table: {}".format(error))
-
-    finally:
-        if ontimedb.is_connected():
-            dbcursor.close()
-            print("MySQL connection is closed")
-
-
-@app.route("/loginrequest", methods=["POST"])
-def login():
-    login = request.get_json()
-    email = login["email"]
-    password = login["password"]
-    
-    try:
-        dbcursor = ontimedb.cursor()
-        sql_staff_login_query = ("""SELECT * FROM attendant
-                                    WHERE email = %s AND password = %s""")
-        dbcursor.execute(sql_staff_login_query, (email, password))
-        record = dbcursor.fetchall()
-        return jsonify(record), 200
-
-    except mysql.connector.Error as error:
-        print("Failed to get an attendant from to attendant table: {}".format(error))
 
     finally:
         if ontimedb.is_connected():
