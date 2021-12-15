@@ -6,7 +6,7 @@
         </h1>
 
       <div class="tabeldash">
-        <Tabeldash />
+        <Client />
       </div>
 
       <div class="afsprakendash">
@@ -24,7 +24,7 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Afsprakendash from '../components/Afsprakendash.vue';
-import Tabeldash from '../components/Tabeldash';
+import Client from '../components/Client'
 
 export default {
     name: 'Bdashboard',
@@ -32,7 +32,7 @@ export default {
         Header,
         Footer,
         Afsprakendash,
-        Tabeldash
+        Client
     },
 
     /* OPHALEN GEBRUIKER IN DATABASE, AUTHORIZATION CHECKEN UIT LOCAL STORAGE

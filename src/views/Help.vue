@@ -13,15 +13,18 @@
 
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+//import Helppopup from '../components/Helppopup'
 
 export default {
     name: 'Help',
     components: {
       Footer,
-      Header
+      Header,
+      //Helppopup
   }
 }
-</script>
+
+  </script>
 
 <style>
 

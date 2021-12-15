@@ -57,7 +57,6 @@ export default {
                 email: "",
                 password: "",
         }
-        
     },
     methods: {
         async Loginform(){
