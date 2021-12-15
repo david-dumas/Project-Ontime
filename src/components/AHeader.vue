@@ -7,6 +7,12 @@
 
             <v-spacer></v-spacer>
 
+            <div class="help">
+
+            <Helppopup />
+
+            </div>
+
         <v-btn
             class="button"
             depressed
@@ -14,16 +20,6 @@
             >
             <router-link to="/admin-dashboard" active-class="active" tag="button" exact class="nav-btn">
                         Dashboard
-            </router-link>
-        </v-btn>
-        
-        <v-btn
-            class="button"
-            depressed
-            color="white"
-            >
-            <router-link to="/help" active-class="active" tag="button" exact class="nav-btn">
-                        Help
             </router-link>
         </v-btn>
 
@@ -42,8 +38,13 @@
 </template>
 
 <script>
+import Helppopup from '../components/Helppopup'
+
 export default {
-    name: 'AHeader'
+    name: 'AHeader',
+    components: {
+        Helppopup
+    }
 }
 </script>
 

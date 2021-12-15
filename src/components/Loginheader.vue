@@ -7,27 +7,29 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn
-                class="button"
-                depressed
-                color="white"
-                >
-                <router-link to="/help" active-class="active" tag="button" exact class="nav-btn">
-                    Help
-                </router-link>
-            </v-btn>
+            <div class="help">
+
+            <Helppopup />
+
+            </div>
+
         </v-toolbar>
     </nav>
 </template>
 
 <script>
+import Helppopup from '../components/Helppopup'
+
 export default {
-    name: 'Loginheader'
+    name: 'Loginheader',
+    components: {
+        Helppopup
+    }
 }
 </script>
 
 <style>
-    .button{
+    .help{
         margin-right: 5px;
     }
 

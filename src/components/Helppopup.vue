@@ -1,4 +1,5 @@
 <template>
+    <v-row>
     <v-col cols="auto">
       <v-dialog
         transition="dialog-top-transition"
@@ -54,7 +55,6 @@
         </v-layout>
       </v-container>
 
-
       <v-container> 
         <v-layout>       
           <v-flex>
@@ -72,7 +72,6 @@
         </v-layout>
       </v-container>
 
-      
             <v-card-actions class="justify-end">
               <v-btn
                 text
@@ -86,15 +85,11 @@
     </v-col>
   </v-row>
 
-
-  
-
 </template>
-
 
 <script>
 export default {
-    
+    name: 'Helppopup'
 }
 </script>
 

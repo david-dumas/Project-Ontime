@@ -4,7 +4,6 @@ import Login from '../views/Login';
 import Bdashboard from '../views/Bdashboard';
 import Adashboard from '../views/Adashboard';
 import Agenda from '../views/Agenda';
-import Help from '../views/Help';
 import store from '../store/store'
 
 Vue.use(VueRouter)
@@ -57,11 +56,6 @@ const routes = [
         next();
       }
     },
-  },
-  {
-    path: '/help',
-    name: 'Help',
-    component: Help
   }
 ]
 
