@@ -8,7 +8,7 @@ CORS(app)
 app.config["DEBUG"] = True
 
 
-with open(r"python\mysql.txt") as f1:
+with open(r"./mysql.txt") as f1:
     data=csv.reader(f1,delimiter=",")
     for row in data:
             host=row[0]
