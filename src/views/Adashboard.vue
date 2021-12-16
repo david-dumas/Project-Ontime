@@ -1,7 +1,7 @@
 <template>
   <div classname="adashboard">
     <AHeader />
-    <br>
+    <br />
     <h1>Admin Dashboard</h1>
     <div class="tables">
       <v-container>

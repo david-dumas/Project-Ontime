@@ -61,9 +61,7 @@
               <v-icon class="mr-2" @click="editItem(selected)">
                 mdi-pencil
               </v-icon>
-              <v-icon class="mr-2" @click="deleteItem()">
-                mdi-delete
-              </v-icon>
+              <v-icon class="mr-2" @click="deleteItem()"> mdi-delete </v-icon>
 
               <v-spacer></v-spacer>
             </v-card-actions>
@@ -195,26 +193,20 @@ export default {
     },
     // Verwijderd begeleiders in firebase
     async deleteAttendant(item) {
-      await db
-        .collection("Begeleiders")
-        .doc(item)
-        .delete();
+      await db.collection("Begeleiders").doc(item).delete();
       this.getAttendant();
       this.dialogDelete = false;
       this.dialogOpen = false;
     },
     // Update begeleiders in firebase
     async updateAttendant(item) {
-      await db
-        .collection("Begeleiders")
-        .doc(item.id)
-        .update({
-          firstname: item.firstname,
-          lastname: item.lastname,
-          email: item.email,
-          phonenmbr: item.phonenmbr,
-          password: item.password,
-        });
+      await db.collection("Begeleiders").doc(item.id).update({
+        firstname: item.firstname,
+        lastname: item.lastname,
+        email: item.email,
+        phonenmbr: item.phonenmbr,
+        password: item.password,
+      });
       this.getAttendant();
       this.dialogEdit = false;
     },

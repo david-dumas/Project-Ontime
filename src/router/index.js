@@ -18,7 +18,6 @@ const routes = [
     path: '/begeleider-dashboard',
     name: 'Bdashboard',
     component: Bdashboard,
-    /* Navigation guard zodat gebruiker niet vanaf adresbalk de inlog kan omzeilen */
     beforeEnter: (to, from, next) => {
       if (store.state.isAuthenticated == false) {
         next('/');
@@ -52,7 +51,7 @@ const routes = [
         next('/');
       } if (localStorage.getItem("token") == null) {
         next('/');
-      }  else {
+      } else {
         next();
       }
     },
@@ -93,4 +92,4 @@ router.beforeEach((to, from, next) => {
     next();
   }
 }); */
- 
+

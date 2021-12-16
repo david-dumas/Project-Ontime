@@ -67,9 +67,7 @@
               <v-icon class="mr-2" @click="editItem(selected)">
                 mdi-pencil
               </v-icon>
-              <v-icon class="mr-2" @click="deleteItem()">
-                mdi-delete
-              </v-icon>
+              <v-icon class="mr-2" @click="deleteItem()"> mdi-delete </v-icon>
 
               <v-spacer></v-spacer>
             </v-card-actions>
@@ -226,26 +224,20 @@ export default {
     },
     // Verwijderd clienten in firebase
     async deleteClient(item) {
-      await db
-        .collection("Clienten")
-        .doc(item)
-        .delete();
+      await db.collection("Clienten").doc(item).delete();
       this.getClient();
       this.dialogDelete = false;
       this.dialogOpen = false;
     },
     // Update clienten in firebase
     async updateClient(item) {
-      await db
-        .collection("Clienten")
-        .doc(item.id)
-        .update({
-          firstname: item.firstname,
-          lastname: item.lastname,
-          email: item.email,
-          phonenmbr: item.phonenmbr,
-          cardnmbr: item.cardnmbr,
-        });
+      await db.collection("Clienten").doc(item.id).update({
+        firstname: item.firstname,
+        lastname: item.lastname,
+        email: item.email,
+        phonenmbr: item.phonenmbr,
+        cardnmbr: item.cardnmbr,
+      });
       this.getClient();
       this.dialogEdit = false;
     },

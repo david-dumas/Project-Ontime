@@ -64,9 +64,7 @@
               <v-icon class="mr-2" @click="editItem(selected)">
                 mdi-pencil
               </v-icon>
-              <v-icon class="mr-2" @click="deleteItem()">
-                mdi-delete
-              </v-icon>
+              <v-icon class="mr-2" @click="deleteItem()"> mdi-delete </v-icon>
 
               <v-spacer></v-spacer>
             </v-card-actions>
@@ -141,9 +139,7 @@
     </template>
     <!-- Acties -->
     <template v-slot:[`item.actions`]="{ item }">
-      <v-icon class="mr-2" @click="openItem(item)">
-        mdi-menu
-      </v-icon>
+      <v-icon class="mr-2" @click="openItem(item)"> mdi-menu </v-icon>
     </template>
     <!-- Geen data -->
     <template v-slot:no-data>
@@ -204,25 +200,19 @@ export default {
     },
     // Verwijderd afdelingen in firebase
     async deleteDepartment(item) {
-      await db
-        .collection("Afdelingen")
-        .doc(item)
-        .delete();
+      await db.collection("Afdelingen").doc(item).delete();
       this.getDepartment();
       this.dialogDelete = false;
       this.dialogOpen = false;
     },
     // Update afdeling in firebase
     async updateDepartment(item) {
-      await db
-        .collection("Afdelingen")
-        .doc(item.id)
-        .update({
-          name: item.name,
-          location: item.location,
-          phonenmbr: item.phonenmbr,
-          headattendant: item.headattendant,
-        });
+      await db.collection("Afdelingen").doc(item.id).update({
+        name: item.name,
+        location: item.location,
+        phonenmbr: item.phonenmbr,
+        headattendant: item.headattendant,
+      });
       this.getDepartment();
       this.dialogEdit = false;
     },

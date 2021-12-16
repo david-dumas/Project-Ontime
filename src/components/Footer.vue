@@ -1,9 +1,5 @@
 <template>
-  <v-footer
-    app bottom fixed
-    color="#006027"
-    padless
-  >
+  <v-footer app bottom fixed color="#006027" padless>
     <v-card
       flat
       tile
@@ -11,7 +7,6 @@
       class="white--text text-center"
       width="100%"
     >
-
       <v-card-text class="white--text">
         Ontime - {{ new Date().getFullYear() }}
       </v-card-text>
@@ -21,10 +16,9 @@
 
 <script>
 export default {
-    name: 'Footer'
-}
+  name: "Footer",
+};
 </script>
 
 <style>
-  
 </style>

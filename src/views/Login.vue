@@ -1,7 +1,7 @@
 <template>
-  <div class='html'>
-  <Loginheader />
-  <div class='login'>    
+  <div class="html">
+    <Loginheader />
+    <div class="login">
       <Loginform />
     </div>
     <Footer />
@@ -9,21 +9,19 @@
 </template>
 
 <script>
-
-import Loginheader from '../components/Loginheader'
-import Footer from '../components/Footer'
-import Loginform from '../components/Loginform'
+import Loginheader from "../components/Loginheader";
+import Footer from "../components/Footer";
+import Loginform from "../components/Loginform";
 
 export default {
-  name: 'login',
+  name: "login",
   components: {
-      Footer,
-      Loginheader,
-      Loginform
-  }
-}
+    Footer,
+    Loginheader,
+    Loginform,
+  },
+};
 </script>
 
 <style scoped>
-
 </style>
