@@ -40,7 +40,7 @@ def add_contact():
         dbcursor = ontimedb.cursor()
         sql_add_contact_query = """INSERT INTO contact (firstname, lastname, phonenmbr, email, city, street, housenmbr, postalcode) 
                                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
-        dbcursor.execute(sql_add_contact_query, (firstname, lastname, phonenmbr, email, city, street, housenmbr, postalcode))
+        dbcursor.execute(sql_add_contact_query, (firstname, lastname, phonenmbr, email, city, street, housenmbr, postalcode,))
         
         ontimedb.commit()
         return("Commit succesful")
@@ -66,7 +66,7 @@ def add_attendant():
         dbcursor = ontimedb.cursor()
         sql_add_attendant_query = """INSERT INTO attendant (firstname, lastname, phonenmbr, email, password) 
                                 VALUES (%s, %s, %s, %s, %s)"""
-        dbcursor.execute(sql_add_attendant_query, (firstname, lastname, phonenmbr, email, password))
+        dbcursor.execute(sql_add_attendant_query, (firstname, lastname, phonenmbr, email, password,))
         
         ontimedb.commit()
         return("Commit succesful")
@@ -136,7 +136,7 @@ def update_attendant():
         sql_update_attendant_query = """UPDATE attendant 
                                 SET firstname = %s, lastname = %s, phonenmbr = %s, email = %s, password = %s
                                 WHERE id = %s"""
-        dbcursor.execute(sql_update_attendant_query, (firstname, lastname, phonenmbr, email, password, id))
+        dbcursor.execute(sql_update_attendant_query, (firstname, lastname, phonenmbr, email, password, id,))
 
         ontimedb.commit()
         return("Commit succesful")
@@ -144,6 +144,28 @@ def update_attendant():
     except mysql.connector.Error as error:
         print("Failed to update attendant in attendant table: {}".format(error))
         
+    finally:
+        if ontimedb.is_connected():
+            dbcursor.close()
+            print("MySQL connection is closed")
+
+
+@app.route("/deleteattendant", methods = ["POST"])
+def delete_attendant_detail():
+    delete_attendant = request.get_json()
+    id = delete_attendant["id"]
+    try:
+        dbcursor = ontimedb.cursor()
+        sql_delete_attendant_query = """DELETE FROM attendant 
+                                WHERE id = %s"""
+        dbcursor.execute(sql_delete_attendant_query, (id,))
+
+        ontimedb.commit()
+        return("Delete succesful")
+
+    except mysql.connector.Error as error:
+        print("Failed to delete attendant from attendant table: {}".format(error))
+
     finally:
         if ontimedb.is_connected():
             dbcursor.close()
