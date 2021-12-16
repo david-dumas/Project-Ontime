@@ -104,21 +104,17 @@ def get_contact_detail():
             print("MySQL connection is closed")
 
 
-@app.route("/getattendant", methods = ["POST"])
+@app.route("/getattendant", methods = ["GET"])
 def get_attendant_detail():
-    getattendant = request.get_json()
-    firstname = getattendant["firstname"]
-    lastname = getattendant["lastname"]
     try:
         dbcursor = ontimedb.cursor()
-        sql_people_query = """SELECT * FROM attendant 
-                                WHERE firstname = %s AND lastname = %s"""
-        dbcursor.execute(sql_people_query, (firstname, lastname,))
+        sql_people_query = "SELECT * FROM attendant"
+        dbcursor.execute(sql_people_query)
         record = dbcursor.fetchall()
         return jsonify(record), 200
 
     except mysql.connector.Error as error:
-        print("Failed to get an attendant from attendant table: {}".format(error))
+        print("Failed to get attendants from attendant table: {}".format(error))
 
     finally:
         if ontimedb.is_connected():
