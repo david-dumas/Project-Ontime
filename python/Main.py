@@ -121,6 +121,27 @@ def get_attendant_detail():
             print("MySQL connection is closed")
 
 
+# Updateing data in existing tables
+@app.route("/updateattendant", methods = ["POST"])
+def update_attendant():
+    updateattendant = request.get_json()
+    id = updateattendant["id"]
+    firstname = updateattendant["firstname"]
+    lastname = updateattendant["lastname"]
+    phonenmbr = updateattendant["phonenmbr"]
+    email = updateattendant["email"]
+    password = updateattendant["password"]
+
+    dbcursor = ontimedb.cursor()
+    sql_update_attendant_query = """UPDATE attendant 
+                            SET firstname = %s, lastname = %s, phonenmbr = %s, email = %s, password = %s
+                            WHERE id = %s"""
+    dbcursor.execute(sql_update_attendant_query, (firstname, lastname, phonenmbr, email, password, id))
+
+    ontimedb.commit()
+    return("Commit succesful")
+
+
 # Login
 app.config["SECRET_KEY"] = "thisissecret"
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://dbuser:Dbuser123!@145.89.192.95/ontime"
