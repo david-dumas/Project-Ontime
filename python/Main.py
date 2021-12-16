@@ -126,66 +126,66 @@ def get_attendant_detail():
             print("MySQL connection is closed")
 
 
-# # Login
+# Login
 
-# app.config["SECRET_KEY"] = "thisissecret"
-# app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://dbuser:Dbuser123!@145.89.192.95/ontime"
-# db = SQLAlchemy(app)
-
-
-# login_manager = LoginManager()
-# login_manager.init_app(app)
-
-# # Attendant table
-# class attendant(UserMixin, db.Model):
-# 	id = db.Column(db.Integer, primary_key=True) 
-# 	firstname = db.Column(db.String(50))
-# 	lastname	= db.Column(db.String(50))
-# 	phonenmbr = db.Column(db.String(50))
-# 	email = db.Column(db.String(50), unique=True)
-# 	password = db.Column(db.String(50))
+app.config["SECRET_KEY"] = "thisissecret"
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://dbuser:Dbuser123!@145.89.192.95/ontime"
+db = SQLAlchemy(app)
 
 
-# @login_manager.user_loader
-# def load_user(user_id):
-#     return attendant.query.get(int(user_id))
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+# Attendant table
+class attendant(UserMixin, db.Model):
+	id = db.Column(db.Integer, primary_key=True) 
+	firstname = db.Column(db.String(50))
+	lastname	= db.Column(db.String(50))
+	phonenmbr = db.Column(db.String(50))
+	email = db.Column(db.String(50), unique=True)
+	password = db.Column(db.String(50))
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return attendant.query.get(int(user_id))
 
 # # Login authentication
-# @app.route("/login_request", methods = ["POST"])
-# def login_request():
-#     data = request.get_json()
-#     email = data["email"]
-#     password = data["password"]
+@app.route("/login_request", methods = ["POST"])
+def login_request():
+    data = request.get_json()
+    email = data["email"]
+    password = data["password"]
 
 #     # Database query om de gebruiker op te halen
-#     user = attendant.query.filter_by(email=email).first()
+    user = attendant.query.filter_by(email=email).first()
 
 #     # Wachtwoord controle
-#     if user.password == password:
-#         session["active"] = True
-#         session.modified = True
-#         response = ("it works")
-#         response = jsonify(val=True)
-#     if not user:
-#         response = jsonify(val=False)
+    if user.password == password:
+        session["active"] = True
+        session.modified = True
+        response = ("it works")
+        response = jsonify(val=True)
+    if not user:
+        response = jsonify(val=False)
 
-#     response.headers.add("Access-Control-Allow-Headers",
-#                             "Origin, X-Requested-With, Content-Type, Accept, x-auth")
+    response.headers.add("Access-Control-Allow-Headers",
+                            "Origin, X-Requested-With, Content-Type, Accept, x-auth")
 
-#     payload = {
-#         "id": user.id,
-#         "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
-#         "iat": datetime.datetime.utcnow()
-#     }
+    payload = {
+        "id": user.id,
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+        "iat": datetime.datetime.utcnow()
+    }
 
 #     # Meegeven JWT token
-#     token = jwt.encode(payload, "secret", algorithm="HS256")
+    token = jwt.encode(payload, "secret", algorithm="HS256")
     
-#     tokenresponse = {
-#         "token" : token.decode()
-#     }
+    tokenresponse = {
+        "token" : token.decode()
+    }
 
-#     return jsonify({"val" : True}, tokenresponse)
+    return jsonify({"val" : True}, tokenresponse)
 
 if __name__ == '__main__':
     app.run(debug = True)
