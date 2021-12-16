@@ -23,8 +23,8 @@ ontimedb = mysql.connector.connect(
     user=user,
     password=password)
 
-# Adding records to existing tables:
 
+# Adding records to existing tables:
 @app.route("/addcontact", methods = ["POST"])
 def add_contact():
     addcontact = request.get_json()
@@ -81,7 +81,6 @@ def add_attendant():
 
 
 # Requesting data from existing tables
-
 @app.route("/getcontact", methods = ["POST"])
 def get_contact_detail():
     getcontact = request.get_json()
@@ -123,7 +122,6 @@ def get_attendant_detail():
 
 
 # Login
-
 app.config["SECRET_KEY"] = "thisissecret"
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://dbuser:Dbuser123!@145.89.192.95/ontime"
 db = SQLAlchemy(app)
