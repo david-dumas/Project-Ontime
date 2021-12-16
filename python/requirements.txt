@@ -5,3 +5,4 @@ mysql
 mysqlclient
 mysql-connector-python
 pymysql
+Flask-SQLAlchemy
