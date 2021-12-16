@@ -150,17 +150,17 @@ class attendant(UserMixin, db.Model):
 def load_user(user_id):
     return attendant.query.get(int(user_id))
 
-# # Login authentication
+# Login authentication
 @app.route("/login_request", methods = ["POST"])
 def login_request():
     data = request.get_json()
     email = data["email"]
     password = data["password"]
 
-#     # Database query om de gebruiker op te halen
+# Database query om de gebruiker op te halen
     user = attendant.query.filter_by(email=email).first()
 
-#     # Wachtwoord controle
+# Wachtwoord controle
     if user.password == password:
         session["active"] = True
         session.modified = True
@@ -178,14 +178,10 @@ def login_request():
         "iat": datetime.datetime.utcnow()
     }
 
-#     # Meegeven JWT token
+# Meegeven JWT token
     token = jwt.encode(payload, "secret", algorithm="HS256")
-    
-    tokenresponse = {
-        "token" : token.decode()
-    }
 
-    return jsonify({"val" : True}, tokenresponse)
+    return jsonify({"val" : True, "token" : token.decode()})
 
 if __name__ == '__main__':
     app.run(debug = True)
