@@ -1,10 +1,11 @@
-import csv, flask, mysql.connector
+import csv, flask, mysql.connector, jwt, datetime
 from flask_login import LoginManager, UserMixin
-from flask import jsonify, request
 from flask_cors import CORS
+from flask import request, jsonify, session
+from flask_sqlalchemy import SQLAlchemy
 
 app = flask.Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
 app.config["DEBUG"] = True
 
 
@@ -28,7 +29,7 @@ ontimedb = mysql.connector.connect(
 def add_contact():
     addcontact = request.get_json()
     firstname = addcontact["firstname"]
-    surname = addcontact["surname"]
+    lastname = addcontact["lastname"]
     phonenmbr = addcontact["phonenmbr"]
     email = addcontact["email"]
     city = addcontact["city"]
@@ -37,9 +38,9 @@ def add_contact():
     postalcode = addcontact["postalcode"]
     try:
         dbcursor = ontimedb.cursor()
-        sql_add_contact_query = """INSERT INTO contact (firstname, surname, phonenmbr, email, city, street, housenmbr, postalcode) 
+        sql_add_contact_query = """INSERT INTO contact (firstname, lastname, phonenmbr, email, city, street, housenmbr, postalcode) 
                                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
-        dbcursor.execute(sql_add_contact_query, (firstname, surname, phonenmbr, email, city, street, housenmbr, postalcode))
+        dbcursor.execute(sql_add_contact_query, (firstname, lastname, phonenmbr, email, city, street, housenmbr, postalcode))
         
         ontimedb.commit()
         return("Commit succesful")
@@ -57,15 +58,15 @@ def add_contact():
 def add_attendant():
     addattendant = request.get_json()
     firstname = addattendant["firstname"]
-    surname = addattendant["surname"]
+    lastname = addattendant["lastname"]
     phonenmbr = addattendant["phonenmbr"]
     email = addattendant["email"]
     password = addattendant["password"]
     try:
         dbcursor = ontimedb.cursor()
-        sql_add_attendant_query = """INSERT INTO attendant (firstname, surname, phonenmbr, email, password) 
+        sql_add_attendant_query = """INSERT INTO attendant (firstname, lastname, phonenmbr, email, password) 
                                 VALUES (%s, %s, %s, %s, %s)"""
-        dbcursor.execute(sql_add_attendant_query, (firstname, surname, phonenmbr, email, password))
+        dbcursor.execute(sql_add_attendant_query, (firstname, lastname, phonenmbr, email, password))
         
         ontimedb.commit()
         return("Commit succesful")
@@ -85,12 +86,12 @@ def add_attendant():
 def get_contact_detail():
     getcontact = request.get_json()
     firstname = getcontact["firstname"]
-    surname = getcontact["surname"]
+    lastname = getcontact["lastname"]
     try:
         dbcursor = ontimedb.cursor()
         sql_people_query = """SELECT * FROM contact 
-                                WHERE firstname = %s AND surname = %s"""
-        dbcursor.execute(sql_people_query, (firstname, surname,))
+                                WHERE firstname = %s AND lastname = %s"""
+        dbcursor.execute(sql_people_query, (firstname, lastname,))
         record = dbcursor.fetchall()
         return jsonify(record), 200
 
@@ -107,12 +108,12 @@ def get_contact_detail():
 def get_attendant_detail():
     getattendant = request.get_json()
     firstname = getattendant["firstname"]
-    surname = getattendant["surname"]
+    lastname = getattendant["lastname"]
     try:
         dbcursor = ontimedb.cursor()
         sql_people_query = """SELECT * FROM attendant 
-                                WHERE firstname = %s AND surname = %s"""
-        dbcursor.execute(sql_people_query, (firstname, surname,))
+                                WHERE firstname = %s AND lastname = %s"""
+        dbcursor.execute(sql_people_query, (firstname, lastname,))
         record = dbcursor.fetchall()
         return jsonify(record), 200
 
@@ -124,6 +125,67 @@ def get_attendant_detail():
             dbcursor.close()
             print("MySQL connection is closed")
 
+
+# # Login
+
+# app.config["SECRET_KEY"] = "thisissecret"
+# app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://dbuser:Dbuser123!@145.89.192.95/ontime"
+# db = SQLAlchemy(app)
+
+
+# login_manager = LoginManager()
+# login_manager.init_app(app)
+
+# # Attendant table
+# class attendant(UserMixin, db.Model):
+# 	id = db.Column(db.Integer, primary_key=True) 
+# 	firstname = db.Column(db.String(50))
+# 	lastname	= db.Column(db.String(50))
+# 	phonenmbr = db.Column(db.String(50))
+# 	email = db.Column(db.String(50), unique=True)
+# 	password = db.Column(db.String(50))
+
+
+# @login_manager.user_loader
+# def load_user(user_id):
+#     return attendant.query.get(int(user_id))
+
+# # Login authentication
+# @app.route("/login_request", methods = ["POST"])
+# def login_request():
+#     data = request.get_json()
+#     email = data["email"]
+#     password = data["password"]
+
+#     # Database query om de gebruiker op te halen
+#     user = attendant.query.filter_by(email=email).first()
+
+#     # Wachtwoord controle
+#     if user.password == password:
+#         session["active"] = True
+#         session.modified = True
+#         response = ("it works")
+#         response = jsonify(val=True)
+#     if not user:
+#         response = jsonify(val=False)
+
+#     response.headers.add("Access-Control-Allow-Headers",
+#                             "Origin, X-Requested-With, Content-Type, Accept, x-auth")
+
+#     payload = {
+#         "id": user.id,
+#         "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+#         "iat": datetime.datetime.utcnow()
+#     }
+
+#     # Meegeven JWT token
+#     token = jwt.encode(payload, "secret", algorithm="HS256")
+    
+#     tokenresponse = {
+#         "token" : token.decode()
+#     }
+
+#     return jsonify({"val" : True}, tokenresponse)
 
 if __name__ == '__main__':
     app.run(debug = True)
