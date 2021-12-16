@@ -107,8 +107,8 @@ def get_contact_detail():
 def get_attendant_detail():
     try:
         dbcursor = ontimedb.cursor()
-        sql_people_query = "SELECT * FROM attendant"
-        dbcursor.execute(sql_people_query)
+        sql_get_attendant_query = "SELECT * FROM attendant"
+        dbcursor.execute(sql_get_attendant_query)
         record = dbcursor.fetchall()
         return jsonify(record), 200
 
@@ -131,22 +131,29 @@ def update_attendant():
     phonenmbr = updateattendant["phonenmbr"]
     email = updateattendant["email"]
     password = updateattendant["password"]
+    try:
+        dbcursor = ontimedb.cursor()
+        sql_update_attendant_query = """UPDATE attendant 
+                                SET firstname = %s, lastname = %s, phonenmbr = %s, email = %s, password = %s
+                                WHERE id = %s"""
+        dbcursor.execute(sql_update_attendant_query, (firstname, lastname, phonenmbr, email, password, id))
 
-    dbcursor = ontimedb.cursor()
-    sql_update_attendant_query = """UPDATE attendant 
-                            SET firstname = %s, lastname = %s, phonenmbr = %s, email = %s, password = %s
-                            WHERE id = %s"""
-    dbcursor.execute(sql_update_attendant_query, (firstname, lastname, phonenmbr, email, password, id))
-
-    ontimedb.commit()
-    return("Commit succesful")
+        ontimedb.commit()
+        return("Commit succesful")
+    
+    except mysql.connector.Error as error:
+        print("Failed to update attendant in attendant table: {}".format(error))
+        
+    finally:
+        if ontimedb.is_connected():
+            dbcursor.close()
+            print("MySQL connection is closed")
 
 
 # Login
 app.config["SECRET_KEY"] = "thisissecret"
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://dbuser:Dbuser123!@145.89.192.95/ontime"
 db = SQLAlchemy(app)
-
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -198,5 +205,5 @@ def login_request():
 
     return jsonify({"val" : True, "token" : token.decode()})
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug = True)
