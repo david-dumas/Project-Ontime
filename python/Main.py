@@ -24,6 +24,35 @@ ontimedb = mysql.connector.connect(
     password=password)
 
 
+app.config["SECRET_KEY"] = "thisissecret"
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://dbuser:Dbuser123!@145.89.192.95/ontime"
+db = SQLAlchemy(app)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+admin_manager = LoginManager()
+admin_manager.init_app(app)
+
+
+# Attendant table
+class attendant(UserMixin, db.Model):
+	id = db.Column(db.Integer, primary_key=True) 
+	firstname = db.Column(db.String(50))
+	lastname = db.Column(db.String(50))
+	phonenmbr = db.Column(db.String(50))
+	email = db.Column(db.String(50), unique=True)
+	password = db.Column(db.String(50))
+
+# Attendant table
+class admin(UserMixin, db.Model):
+	id = db.Column(db.Integer, primary_key=True) 
+	firstname = db.Column(db.String(50))
+	lastname = db.Column(db.String(50))
+	phonenmbr = db.Column(db.String(50))
+	email = db.Column(db.String(50), unique=True)
+	password = db.Column(db.String(50))
+
+
 # Adding records to existing tables:
 @app.route("/addcontact", methods = ["POST"])
 def add_contact():
@@ -172,39 +201,22 @@ def delete_attendant_detail():
             print("MySQL connection is closed")
 
 
-# Login
-app.config["SECRET_KEY"] = "thisissecret"
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://dbuser:Dbuser123!@145.89.192.95/ontime"
-db = SQLAlchemy(app)
-
-login_manager = LoginManager()
-login_manager.init_app(app)
-
-# Attendant table
-class attendant(UserMixin, db.Model):
-	id = db.Column(db.Integer, primary_key=True) 
-	firstname = db.Column(db.String(50))
-	lastname	= db.Column(db.String(50))
-	phonenmbr = db.Column(db.String(50))
-	email = db.Column(db.String(50), unique=True)
-	password = db.Column(db.String(50))
-
-
+# Login attendant
 @login_manager.user_loader
-def load_user(user_id):
+def load_attendant(user_id):
     return attendant.query.get(int(user_id))
 
 # Login authentication
-@app.route("/login_request", methods = ["POST"])
-def login_request():
+@app.route("/login_request_attendant", methods = ["POST"])
+def login_request_attendant():
     data = request.get_json()
     email = data["email"]
     password = data["password"]
 
-# Database query om de gebruiker op te halen
+# Database query
     user = attendant.query.filter_by(email=email).first()
 
-# Wachtwoord controle
+# Password check
     if user.password == password:
         session["active"] = True
         session.modified = True
@@ -222,10 +234,50 @@ def login_request():
         "iat": datetime.datetime.utcnow()
     }
 
-# Meegeven JWT token
+# JWT token
     token = jwt.encode(payload, "secret", algorithm="HS256")
 
     return jsonify({"val" : True, "token" : token.decode()})
+
+
+# Login admin
+@admin_manager.user_loader
+def load_admin(admin_id):
+    return admin.query.get(int(admin_id))
+
+# Login authentication
+@app.route("/login_request_admin", methods = ["POST"])
+def login_request_admin():
+    data = request.get_json()
+    email = data["email"]
+    password = data["password"]
+
+# Database query
+    user = admin.query.filter_by(email=email).first()
+
+# Password check
+    if user.password == password:
+        session["active"] = True
+        session.modified = True
+        response = ("it works")
+        response = jsonify(val=True)
+    if not user:
+        response = jsonify(val=False)
+
+    response.headers.add("Access-Control-Allow-Headers",
+                            "Origin, X-Requested-With, Content-Type, Accept, x-auth")
+
+    payload = {
+        "id": user.id,
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+        "iat": datetime.datetime.utcnow()
+    }
+
+# JWT token
+    token = jwt.encode(payload, "secret", algorithm="HS256")
+
+    return jsonify({"val" : True, "token" : token.decode()})
+
 
 if __name__ == "__main__":
     app.run(debug = True)
