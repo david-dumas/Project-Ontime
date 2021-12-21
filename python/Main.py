@@ -28,6 +28,7 @@ app.config["SECRET_KEY"] = "thisissecret"
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://dbuser:Dbuser123!@145.89.192.95/ontime"
 db = SQLAlchemy(app)
 
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 admin_manager = LoginManager()
@@ -43,6 +44,7 @@ class attendant(UserMixin, db.Model):
 	email = db.Column(db.String(50), unique=True)
 	password = db.Column(db.String(50))
 
+
 # Attendant table
 class admin(UserMixin, db.Model):
 	id = db.Column(db.Integer, primary_key=True) 
@@ -51,6 +53,7 @@ class admin(UserMixin, db.Model):
 	phonenmbr = db.Column(db.String(50))
 	email = db.Column(db.String(50), unique=True)
 	password = db.Column(db.String(50))
+
 
 # events
 class events(db.Model):
@@ -61,6 +64,7 @@ class events(db.Model):
     end = db.Column(db.String(50), unique=True)
     color = db.Column(db.String(50))
     client = db.Column(db.String(50))
+
 
 # Adding records to existing tables:
 @app.route("/addcontact", methods = ["POST"])
@@ -143,20 +147,31 @@ def get_contact_detail():
 
 @app.route("/getattendant", methods = ["GET"])
 def get_attendant_detail():
-    try:
-        ontimecursor = ontimedb.cursor()
-        sql_get_attendant_query = "SELECT * FROM attendant"
-        ontimecursor.execute(sql_get_attendant_query)
-        record = ontimecursor.fetchall()
-        return jsonify(record), 200
+    data = executequery("getattendant")
+    return jsonify(data)
 
-    except mysql.connector.Error as error:
-        print("Failed to get attendants from attendant table: {}".format(error))
+def formatrecord(columns,record):
+    number = len(columns)
+    res = []
+    for i in range(number):
+      res.append((columns[i],record[i]))
+    return res
 
-    finally:
-        if ontimedb.is_connected():
-            ontimecursor.close()
-            print("MySQL connection is closed")
+def executequery(query):
+    ontimecursor = ontimedb.cursor()
+    resultset = []
+    columns = []
+    if (query == "getattendant"):
+      sql = "DESCRIBE attendant;"
+    else:
+      query = "can be extended but never reached, use elif"
+    ontimecursor.execute(sql)
+    for (record) in ontimecursor:
+      columns.append(record[0])
+    ontimecursor.execute("SELECT * FROM attendant")
+    for record in ontimecursor:
+      resultset.append(formatrecord(columns,record))
+    return resultset
 
 
 @app.route("/getevents", methods = ["GET"])
@@ -179,7 +194,7 @@ def get_event_detail():
             print("MySQL connection is closed")
 
 
-# Updateing data in existing tables
+# Updating data in existing tables
 @app.route("/updateattendant", methods = ["POST"])
 def update_attendant():
     updateattendant = request.get_json()
@@ -208,6 +223,7 @@ def update_attendant():
             print("MySQL connection is closed")
 
 
+# Deleting data in existing tables
 @app.route("/deleteattendantv1", methods = ["POST"])
 def delete_attendant_detail():
     delete_attendant = request.get_json()
@@ -228,35 +244,6 @@ def delete_attendant_detail():
         if ontimedb.is_connected():
             ontimecursor.close()
             print("MySQL connection is closed")
-
-
-@app.route("/getattendantv2", methods = ["GET"])
-def get_attendant_v2():
-    data = executequery("meta")
-    return jsonify(data)
-
-def formatrecord(columns,record):
-    number = len(columns)
-    res = []
-    for i in range(number):
-      res.append((columns[i],record[i]))
-    return res
-
-def executequery(query):
-    ontimecursor = ontimedb.cursor()
-    resultset = []
-    columns = []
-    if (query == "meta"):
-      sql = "DESCRIBE attendant;"
-    else:
-      query = "can be extended but never reached, use elif"
-    ontimecursor.execute(sql)
-    for (record) in ontimecursor:
-      columns.append(record[0])
-    ontimecursor.execute("SELECT * FROM attendant")
-    for record in ontimecursor:
-      resultset.append(formatrecord(columns,record))
-    return resultset
 
 
 # Login attendant
