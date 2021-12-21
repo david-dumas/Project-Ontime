@@ -163,7 +163,7 @@ def get_attendant_detail():
 def get_event_detail():
     try:
         ontimecursor = ontimedb.cursor()
-        sql_get_event_query = """SELECT events.name, events.details, events.start, events.end, events.color 
+        sql_get_event_query = """SELECT events.name, events.details, events.start, events.end, events.color, client.firstname, client.lastname 
                                 FROM events
                                 INNER JOIN client ON events.client_id=client.id;"""
         ontimecursor.execute(sql_get_event_query)
