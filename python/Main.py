@@ -52,6 +52,15 @@ class admin(UserMixin, db.Model):
 	email = db.Column(db.String(50), unique=True)
 	password = db.Column(db.String(50))
 
+# events
+class events(db.Model):
+    id = db.Column(db.Integer, primary_key=True) 
+    name = db.Column(db.String(100))
+    details = db.Column(db.String(300))
+    start = db.Column(db.String(50))
+    end = db.Column(db.String(50), unique=True)
+    color = db.Column(db.String(50))
+    client = db.Column(db.String(50))
 
 # Adding records to existing tables:
 @app.route("/addcontact", methods = ["POST"])
@@ -66,10 +75,10 @@ def add_contact():
     housenmbr = addcontact["housenmbr"]
     postalcode = addcontact["postalcode"]
     try:
-        dbcursor = ontimedb.cursor()
+        ontimecursor = ontimedb.cursor()
         sql_add_contact_query = """INSERT INTO contact (firstname, lastname, phonenmbr, email, city, street, housenmbr, postalcode) 
                                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
-        dbcursor.execute(sql_add_contact_query, (firstname, lastname, phonenmbr, email, city, street, housenmbr, postalcode,))
+        ontimecursor.execute(sql_add_contact_query, (firstname, lastname, phonenmbr, email, city, street, housenmbr, postalcode,))
         
         ontimedb.commit()
         return("Commit succesful")
@@ -79,7 +88,7 @@ def add_contact():
 
     finally:
         if ontimedb.is_connected():
-            dbcursor.close()
+            ontimecursor.close()
             print("MySQL connection is closed")
 
 
@@ -92,10 +101,10 @@ def add_attendant():
     email = addattendant["email"]
     password = addattendant["password"]
     try:
-        dbcursor = ontimedb.cursor()
+        ontimecursor = ontimedb.cursor()
         sql_add_attendant_query = """INSERT INTO attendant (firstname, lastname, phonenmbr, email, password) 
                                 VALUES (%s, %s, %s, %s, %s)"""
-        dbcursor.execute(sql_add_attendant_query, (firstname, lastname, phonenmbr, email, password,))
+        ontimecursor.execute(sql_add_attendant_query, (firstname, lastname, phonenmbr, email, password,))
         
         ontimedb.commit()
         return("Commit succesful")
@@ -105,7 +114,7 @@ def add_attendant():
 
     finally:
         if ontimedb.is_connected():
-            dbcursor.close()
+            ontimecursor.close()
             print("MySQL connection is closed")
 
 
@@ -116,11 +125,11 @@ def get_contact_detail():
     firstname = getcontact["firstname"]
     lastname = getcontact["lastname"]
     try:
-        dbcursor = ontimedb.cursor()
+        ontimecursor = ontimedb.cursor()
         sql_people_query = """SELECT * FROM contact 
                                 WHERE firstname = %s AND lastname = %s"""
-        dbcursor.execute(sql_people_query, (firstname, lastname,))
-        record = dbcursor.fetchall()
+        ontimecursor.execute(sql_people_query, (firstname, lastname,))
+        record = ontimecursor.fetchall()
         return jsonify(record), 200
 
     except mysql.connector.Error as error:
@@ -128,17 +137,17 @@ def get_contact_detail():
 
     finally:
         if ontimedb.is_connected():
-            dbcursor.close()
+            ontimecursor.close()
             print("MySQL connection is closed")
 
 
 @app.route("/getattendant", methods = ["GET"])
 def get_attendant_detail():
     try:
-        dbcursor = ontimedb.cursor()
+        ontimecursor = ontimedb.cursor()
         sql_get_attendant_query = "SELECT * FROM attendant"
-        dbcursor.execute(sql_get_attendant_query)
-        record = dbcursor.fetchall()
+        ontimecursor.execute(sql_get_attendant_query)
+        record = ontimecursor.fetchall()
         return jsonify(record), 200
 
     except mysql.connector.Error as error:
@@ -146,7 +155,27 @@ def get_attendant_detail():
 
     finally:
         if ontimedb.is_connected():
-            dbcursor.close()
+            ontimecursor.close()
+            print("MySQL connection is closed")
+
+
+@app.route("/getevents", methods = ["GET"])
+def get_event_detail():
+    try:
+        ontimecursor = ontimedb.cursor()
+        sql_get_event_query = """SELECT events.name, events.details, events.start, events.end, events.color 
+                                FROM events
+                                INNER JOIN client ON events.client_id=client.id;"""
+        ontimecursor.execute(sql_get_event_query)
+        record = ontimecursor.fetchall()
+        return jsonify(record), 200
+
+    except mysql.connector.Error as error:
+        print("Failed to get events from events table: {}".format(error))
+
+    finally:
+        if ontimedb.is_connected():
+            ontimecursor.close()
             print("MySQL connection is closed")
 
 
@@ -161,11 +190,11 @@ def update_attendant():
     email = updateattendant["email"]
     password = updateattendant["password"]
     try:
-        dbcursor = ontimedb.cursor()
+        ontimecursor = ontimedb.cursor()
         sql_update_attendant_query = """UPDATE attendant 
                                 SET firstname = %s, lastname = %s, phonenmbr = %s, email = %s, password = %s
                                 WHERE id = %s"""
-        dbcursor.execute(sql_update_attendant_query, (firstname, lastname, phonenmbr, email, password, id,))
+        ontimecursor.execute(sql_update_attendant_query, (firstname, lastname, phonenmbr, email, password, id,))
 
         ontimedb.commit()
         return("Commit succesful")
@@ -175,7 +204,7 @@ def update_attendant():
         
     finally:
         if ontimedb.is_connected():
-            dbcursor.close()
+            ontimecursor.close()
             print("MySQL connection is closed")
 
 
@@ -184,10 +213,10 @@ def delete_attendant_detail():
     delete_attendant = request.get_json()
     id = delete_attendant["id"]
     try:
-        dbcursor = ontimedb.cursor()
+        ontimecursor = ontimedb.cursor()
         sql_delete_attendant_query = """DELETE FROM attendant 
                                 WHERE id = %s"""
-        dbcursor.execute(sql_delete_attendant_query, (id,))
+        ontimecursor.execute(sql_delete_attendant_query, (id,))
 
         ontimedb.commit()
         return("Delete succesful")
@@ -197,7 +226,7 @@ def delete_attendant_detail():
 
     finally:
         if ontimedb.is_connected():
-            dbcursor.close()
+            ontimecursor.close()
             print("MySQL connection is closed")
 
 
