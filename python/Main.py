@@ -208,7 +208,7 @@ def update_attendant():
             print("MySQL connection is closed")
 
 
-@app.route("/deleteattendant", methods = ["POST"])
+@app.route("/deleteattendantv1", methods = ["POST"])
 def delete_attendant_detail():
     delete_attendant = request.get_json()
     id = delete_attendant["id"]
@@ -228,6 +228,35 @@ def delete_attendant_detail():
         if ontimedb.is_connected():
             ontimecursor.close()
             print("MySQL connection is closed")
+
+
+@app.route("/getattendantv2", methods = ["GET"])
+def get_attendant_v2():
+    data = executequery("meta")
+    return jsonify(data)
+
+def formatrecord(columns,record):
+    number = len(columns)
+    res = []
+    for i in range(number):
+      res.append((columns[i],record[i]))
+    return res
+
+def executequery(query):
+    ontimecursor = ontimedb.cursor()
+    resultset = []
+    columns = []
+    if (query == "meta"):
+      sql = "DESCRIBE attendant;"
+    else:
+      query = "can be extended but never reached, use elif"
+    ontimecursor.execute(sql)
+    for (record) in ontimecursor:
+      columns.append(record[0])
+    ontimecursor.execute("SELECT * FROM attendant")
+    for record in ontimecursor:
+      resultset.append(formatrecord(columns,record))
+    return resultset
 
 
 # Login attendant

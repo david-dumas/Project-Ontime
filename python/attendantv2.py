@@ -1,5 +1,6 @@
 import csv, flask, mysql.connector
 from flask_cors import CORS
+from flask import jsonify, request, Flask
 
 app = flask.Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -24,39 +25,31 @@ ontimedb = mysql.connector.connect(
 
 @app.route("/getattendantv2", methods = ["GET"])
 def get_attendant_v2():
-    def formatrecord(columns,record):
-        number = len(columns)
-        res = []
-        for i in range(number):
-          res.append((columns[i],record[i]))
-        return res
+    data = executequery("meta")
+    return jsonify(data)
 
-    def nextid(query):
-        resultset = executequery(query)
-        maxid = resultset[0][0]
-        resultset = resultset[1:]
-        for record in resultset:
-          if (record[0] > maxid):
-            maxid = record[0]
-        return (maxid+1)
+def formatrecord(columns,record):
+    number = len(columns)
+    res = []
+    for i in range(number):
+      res.append((columns[i],record[i]))
+    return res
 
-    def executequery(query):
-        ontimecursor = ontimedb.cursor()
-        resultset = []
-        columns = []
-        if (query == "attendant"):
-          sql = "SELECT * FROM attendant;"
-        elif (query == "meta"):
-          sql = "DESCRIBE attendant;"
-        else:
-          query = "can be extended but never reached, use elif"
-        ontimecursor.execute(sql)
-        for (record) in ontimecursor:
-          columns.append(record[0])
-        ontimecursor.execute("SELECT * FROM attendant")
-        for record in ontimecursor:
-          resultset.append(formatrecord(columns,record))
-        return resultset
+def executequery(query):
+    ontimecursor = ontimedb.cursor()
+    resultset = []
+    columns = []
+    if (query == "meta"):
+      sql = "DESCRIBE attendant;"
+    else:
+      query = "can be extended but never reached, use elif"
+    ontimecursor.execute(sql)
+    for (record) in ontimecursor:
+      columns.append(record[0])
+    ontimecursor.execute("SELECT * FROM attendant")
+    for record in ontimecursor:
+      resultset.append(formatrecord(columns,record))
+    return resultset
 
 
 if __name__ == "__main__":
