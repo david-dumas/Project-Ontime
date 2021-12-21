@@ -1,6 +1,5 @@
 <template>
   <div class="login">
-    <!-- Bartimeus logo -->
     <div class="image">
       <img src="../assets/logo-Bartiméus.png" width="150" />
     </div>
@@ -9,7 +8,6 @@
     <br />
     <h3>Login</h3>
 
-    <!-- Login form -->
     <v-container fluid style="width: 500px">
       <v-form
         @submit.prevent="Loginform"
@@ -55,8 +53,7 @@ export default {
         password: this.password,
       };
 
-      /* Ophalen gebruiker uit de database */
-      const response = await fetch("http://145.89.192.95:5555/login_request", {
+      const response = await fetch("http://145.89.192.95:5555/login_request_attendant", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -65,12 +62,10 @@ export default {
 
       const res = await response.json();
 
-      /* if statement om te kijken of de gebruiker authenticated is */
       if (res.val == true) {
-        /* JWT token opslaan in local storage */
+  
         localStorage.setItem("token", res.token);
 
-        //Commit naar de store dat de gebruiker is ingelogd
         this.$store.commit("setAuthentication", true);
 
         let redirect_url =
@@ -79,24 +74,26 @@ export default {
 
         //CHECKEN OF GEBRUIKER EEN ADMIN IS NA FOUTIEVE USER AUTH
       } else if (res.val == false) {
-        const responseAdmin = await fetch("url", {
+        const responseAdmin = await fetch("http://145.89.192.95:5555/login_request_admin", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
           body: JSON.stringify(data),
         });
 
-        const resAdmin = await responseAdmin.json();
+        const res2 = await responseAdmin.json();
 
-        if (response.val == true) {
-          localStorage.setItem("token", resAdmin.token);
+        if (res2.val == true) {
+          localStorage.setItem("token", res2.token);
 
           this.$store.commit("setAuthentication", true);
 
           let redirect_url = this.$route.query.redirect || "/admin-dashboard";
           this.$router.push(redirect_url);
-        } else if (response.val == false) {
+        } else if (res2.val == false) {
           console.log("Error");
+        } else {
+          alert("Dit werkt niet zemmer")
         }
       }
     },
