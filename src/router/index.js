@@ -4,7 +4,8 @@ import Login from '../views/Login';
 import Bdashboard from '../views/Bdashboard';
 import Adashboard from '../views/Adashboard';
 import Agenda from '../views/Agenda';
-import store from '../store/store'
+import store from '../store/store';
+import AdminLogin from '../views/AdminLogin';
 
 Vue.use(VueRouter)
 
@@ -13,6 +14,11 @@ const routes = [
     path: '/',
     name: 'Login',
     component: Login,
+  },
+  {
+    path: '/admin-login',
+    name: 'AdminLogin',
+    component: AdminLogin,
   },
   {
     path: '/begeleider-dashboard',

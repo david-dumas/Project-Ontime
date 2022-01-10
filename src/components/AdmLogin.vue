@@ -4,7 +4,7 @@
       <img src="../assets/logo-Bartiméus.png" width="150" />
     </div>
 
-    <h3>Login</h3>
+    <h3>Beheerder login</h3>
 
     <v-container fluid style="width: 500px">
       <v-form
@@ -37,7 +37,7 @@
 
 <script>
 export default {
-  name: "Loginform",
+  name: "AdmLogin",
   data() {
     return {
       email: "",
@@ -50,7 +50,7 @@ export default {
         email: this.email,
         password: this.password,
       };
-        const response = await fetch("http://145.89.192.95:5555/login_request_attendant",
+        const response = await fetch("http://145.89.192.95:5555/login_request_admin",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -66,11 +66,11 @@ export default {
 
         this.$store.commit("setAuthentication", true);
 
-        let redirect_url = this.$route.query.redirect || "/begeleider-dashboard";
+        let redirect_url = this.$route.query.redirect || "/admin-dashboard";
         this.$router.push(redirect_url);
 
-      } else { 
-        alert("Vekeerde login gegevens.")
+      } else if (res.val != true) { 
+          alert("Verkeerde beheerder gegevens.")
       }
     },
   }

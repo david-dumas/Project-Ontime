@@ -7,10 +7,6 @@
       <Tabeldash />
     </div>
 
-    <div class="afsprakendash">
-      <Afsprakendash />
-    </div>
-
     <Footer />
   </div>
 </template>
@@ -18,7 +14,6 @@
 <script>
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import Afsprakendash from "../components/Afsprakendash.vue";
 import Tabeldash from "../components/Tabeldash";
 
 export default {
@@ -26,7 +21,6 @@ export default {
   components: {
     Header,
     Footer,
-    Afsprakendash,
     Tabeldash,
   },
 };
@@ -38,14 +32,4 @@ export default {
   margin-top: 1em;
   margin-bottom: 1em;
 }
-.afsprakendash {
-  width: 700px;
-  float: right;
-  margin-right: 4em;
-}
-.tabeldash {
-  width: 700px;
-  float: left;
-  margin-left: 4em;
-}
-</style>
+

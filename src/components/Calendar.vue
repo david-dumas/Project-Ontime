@@ -220,7 +220,7 @@ export default {
     /* -------- OPHALEN CLIENTEN UIT DE DATABASE OM TE LADEN IN SELECT COMPONENT--------- */
 
     async getClients() {
-      let snapshot = await db.collection("cliëntenDB").get();
+      let snapshot = await db.collection("Clienten").get();
       let client = [];
       snapshot.forEach((doc) => {
         let appData = doc.data();
