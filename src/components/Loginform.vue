@@ -32,6 +32,19 @@
         <v-btn type="submit" color="primary"> Log in </v-btn>
       </v-form>
     </v-container>
+
+    <p>Geen begeleider?</p>
+    <v-btn class="adminbutton" color="primary">
+      <router-link
+        to="/admin-login"
+        active-class="active"
+        tag="button"
+        exact
+        class="nav-btn"
+      >
+        log in als beheerder
+      </router-link>
+    </v-btn>
   </div>
 </template>
 
@@ -50,7 +63,8 @@ export default {
         email: this.email,
         password: this.password,
       };
-        const response = await fetch("http://145.89.192.95:5555/login_request_attendant",
+      const response = await fetch(
+        "http://145.89.192.95:5555/login_request_attendant",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -66,14 +80,14 @@ export default {
 
         this.$store.commit("setAuthentication", true);
 
-        let redirect_url = this.$route.query.redirect || "/begeleider-dashboard";
+        let redirect_url =
+          this.$route.query.redirect || "/begeleider-dashboard";
         this.$router.push(redirect_url);
-
-      } else { 
-        alert("Vekeerde login gegevens.")
+      } else {
+        alert("Vekeerde login gegevens.");
       }
     },
-  }
+  },
 };
 </script>
 
