@@ -157,21 +157,27 @@ def formatrecord(columns,record):
       res.append((columns[i],record[i]))
     return res
 
-def executequery(query):
-    ontimecursor = ontimedb.cursor()
-    resultset = []
-    columns = []
-    if (query == "getattendant"):
-      sql = "DESCRIBE attendant;"
-    else:
-      query = "can be extended but never reached, use elif"
-    ontimecursor.execute(sql)
-    for (record) in ontimecursor:
-      columns.append(record[0])
-    ontimecursor.execute("SELECT * FROM attendant")
-    for record in ontimecursor:
-      resultset.append(formatrecord(columns,record))
-    return resultset
+def executequery(getattendant):
+    try:
+        ontimecursor = ontimedb.cursor()
+        resultset = []
+        columns = []
+        ontimecursor.execute("DESCRIBE attendant")
+        for (record) in ontimecursor:
+            columns.append(record[0])
+        ontimecursor.execute("SELECT * FROM attendant")
+        for record in ontimecursor:
+            resultset.append(formatrecord(columns,record))
+        return resultset
+
+    except mysql.connector.Error as error:
+        print("Failed to get a contact from contact table: {}".format(error))
+
+    finally:
+        if ontimedb.is_connected():
+            ontimecursor.close()
+            print("MySQL connection is closed")
+
 
 
 @app.route("/getevents", methods = ["GET"])
