@@ -84,16 +84,14 @@
 <script>
 import { db } from "@/main";
 export default {
-  data() {
-    return {
-      dialog: false,
-      firstname: "",
-      lastname: "",
-      email: "",
-      phonenmbr: "",
-      password: "",
-    };
-  },
+  data: () => ({
+    dialog: false,
+    firstname: "",
+    lastname: "",
+    email: "",
+    phonenmbr: "",
+    password: "",
+  }),
   mounted() {
     this.getAttendant();
   },
@@ -128,7 +126,8 @@ export default {
         this.email = "";
         this.phonenmbr = "";
         this.password = "";
-        // alert("Begeleider is toegevoegd");
+        alert("Begeleider is toegevoegd");
+        window.location.href = "admin-dashboard";
         this.getAttendant();
         this.dialog = false;
       } else {

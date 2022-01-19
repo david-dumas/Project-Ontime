@@ -147,7 +147,7 @@
     </template>
     <!-- Geen data -->
     <template v-slot:no-data>
-      <p>Please Wait</p>
+      <p>No data</p>
     </template>
   </v-data-table>
 </template>
@@ -173,12 +173,12 @@ export default {
     names: [],
   }),
   created() {
-    this.getDepartment();
-    this.getAttendant();
+    this.getDepartments();
+    this.getAttendants();
   },
   methods: {
     // Haalt afdelingen op uit firebase
-    async getDepartment() {
+    async getDepartments() {
       let snapshot = await db.collection("Afdelingen").get();
       let departments = [];
       snapshot.forEach((doc) => {
@@ -189,7 +189,7 @@ export default {
       this.departments = departments;
     },
     // Haalt begeleiders op uit firebase
-    async getAttendant() {
+    async getAttendants() {
       let snapshot = await db.collection("Begeleiders").get();
       let attendants = [];
       snapshot.forEach((doc) => {
@@ -203,17 +203,17 @@ export default {
       }
     },
     // Verwijderd afdelingen in firebase
-    async deleteDepartment(item) {
+    async deleteDepartments(item) {
       await db
         .collection("Afdelingen")
         .doc(item)
         .delete();
-      this.getDepartment();
+      this.getDepartments();
       this.dialogDelete = false;
       this.dialogOpen = false;
     },
     // Update afdeling in firebase
-    async updateDepartment(item) {
+    async updateDepartments(item) {
       await db
         .collection("Afdelingen")
         .doc(item.id)
@@ -223,7 +223,7 @@ export default {
           phonenmbr: item.phonenmbr,
           headattendant: item.headattendant,
         });
-      this.getDepartment();
+      this.getDepartments();
       this.dialogEdit = false;
     },
     // Opent dialog om gegevens te bewerken

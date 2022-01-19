@@ -168,7 +168,7 @@
     </template>
     <!-- Geen data -->
     <template v-slot:no-data>
-      <p>Please Wait</p>
+      <p>No data</p>
     </template>
   </v-data-table>
 </template>
@@ -195,12 +195,12 @@ export default {
     names: [],
   }),
   created() {
-    this.getClient();
+    this.getClients();
     this.getDepartments();
   },
   methods: {
     // Haalt clienten op uit firebase
-    async getClient() {
+    async getClients() {
       let snapshot = await db.collection("Clienten").get();
       let clienten = [];
       snapshot.forEach((doc) => {
@@ -230,7 +230,7 @@ export default {
         .collection("Clienten")
         .doc(item)
         .delete();
-      this.getClient();
+      this.getClients();
       this.dialogDelete = false;
       this.dialogOpen = false;
     },
@@ -246,7 +246,7 @@ export default {
           phonenmbr: item.phonenmbr,
           cardnmbr: item.cardnmbr,
         });
-      this.getClient();
+      this.getClients();
       this.dialogEdit = false;
     },
     // Opent dialog om gegevens te bewerken

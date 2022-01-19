@@ -153,7 +153,7 @@
     </template>
     <!-- Geen data -->
     <template v-slot:no-data>
-      <p>Please Wait</p>
+      <p>No data</p>
     </template>
   </v-data-table>
 </template>
@@ -178,11 +178,11 @@ export default {
     attendants: [],
   }),
   created() {
-    this.getAttendant();
+    this.getAttendants();
   },
   methods: {
     // Haalt begeleiders op uit firebase
-    async getAttendant() {
+    async getAttendants() {
       let snapshot = await db.collection("Begeleiders").get();
       let attendants = [];
       snapshot.forEach((doc) => {
@@ -199,7 +199,7 @@ export default {
         .collection("Begeleiders")
         .doc(item)
         .delete();
-      this.getAttendant();
+      this.getAttendants();
       this.dialogDelete = false;
       this.dialogOpen = false;
     },
@@ -215,7 +215,7 @@ export default {
           phonenmbr: item.phonenmbr,
           password: item.password,
         });
-      this.getAttendant();
+      this.getAttendants();
       this.dialogEdit = false;
     },
     // Opent dialog om gegevens te bewerken
