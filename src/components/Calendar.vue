@@ -107,7 +107,6 @@
           v-model="focus"
           color="primary"
           :events="events"
-          :event-color="getEventColor"
           :type="type"
           @click:event="showEvent"
           @click:more="viewDay"
@@ -228,7 +227,6 @@ export default {
         client.push(appData);
       });
       this.client = client;
-      console.log(client);
     },
 
     /* ----------- AFSPRAAK TOEVOEGEN -----------*/

@@ -15,10 +15,14 @@
           class="elevation-1"
         >
           <!-- Selecteren uit de lijst -->
+
+          <!-- :value="itemSelected" kan nog bij de v-simple-checkbox worden toegevoegd. -->
           <template v-slot:item.selected="{ item }">
             <v-simple-checkbox
+              :ripple="false"
               v-model="item.selected"
               enabled
+              @change="update"
             ></v-simple-checkbox>
           </template>
         </v-data-table>
@@ -58,7 +62,6 @@
                       v-model="focus"
                       color="#018245"
                       :events="events"
-                      :event-color="getEventColor"
                       :type="type"
                       @click:event="showEvent"
                       @click:more="viewDay"
@@ -138,6 +141,7 @@
 
 <script>
 import { db } from "@/main";
+import store from '../store/store';
 
 export default {
   name: "Tabeldash",
@@ -183,6 +187,20 @@ export default {
   },
 
   methods: {
+
+    update() {
+      this.$store.commit("setSelection", true);
+      console.log("De state is veranderd naar true!")
+    },
+
+    selectedClients() {
+      if (store.state.isSelected == false) {
+        //don't show events
+      } else if (store.state.isSelected == true){
+        //do show events
+      }
+    },
+    
     // Haalt clienten op uit firebase
     async getClient() {
       let snapshot = await db.collection("Clienten").get();

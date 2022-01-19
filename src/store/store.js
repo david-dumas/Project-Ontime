@@ -10,7 +10,7 @@ const store = new Vuex.Store({
 
     state: {
         isAuthenticated: false,
-
+        isSelected: false
     },
     getters: {
 
@@ -21,6 +21,9 @@ const store = new Vuex.Store({
     mutations: {
         setAuthentication(state, status) {
             state.isAuthenticated = status;
+        },
+        setSelection(state, status) {
+            state.isSelected = status;
         }
     }
 })

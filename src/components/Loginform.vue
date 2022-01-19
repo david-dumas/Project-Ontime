@@ -79,6 +79,7 @@ export default {
         localStorage.setItem("token", res.token);
 
         this.$store.commit("setAuthentication", true);
+        console.log("De login state is veranderd naar true!")
 
         let redirect_url =
           this.$route.query.redirect || "/begeleider-dashboard";

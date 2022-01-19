@@ -1,9 +1,9 @@
 <template>
   <nav>
-    <v-toolbar flat app color="#018245">
-      <v-toolbar-title class="text-uppercase white--text">
+    <v-app-bar flat app color="#018245">
+      <v-app-bar-title class="text-uppercase white--text">
         <span class="font-weight-light">Ontime</span>
-      </v-toolbar-title>
+      </v-app-bar-title>
 
       <v-spacer></v-spacer>
 
@@ -35,6 +35,8 @@
         </router-link>
       </v-btn>
 
+
+      <!-- @click="logout" LOGUIT FUNCTIE DIE WE (NOG NIET) GEBRUIKEN -->
       <v-btn class="button" depressed color="white">
         <router-link
           to="/"
@@ -42,12 +44,11 @@
           tag="button"
           exact
           class="nav-btn"
-          @click="logout"
         >
           Log uit
         </router-link>
       </v-btn>
-    </v-toolbar>
+    </v-app-bar>
   </nav>
 </template>
 
