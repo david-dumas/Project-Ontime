@@ -11,40 +11,51 @@
         @submit.prevent="Loginform"
         method="POST"
         ref="form"
-        v-model="valid"
         lazy-validation
       >
         <v-text-field
-          id="email"
+          label="Email*"
           v-model="email"
-          label="E-mail"
+          :rules="[rules.required, rules.email]"
+          prepend-icon="mdi-email"
           required
         ></v-text-field>
 
         <v-text-field
-          type="password"
-          id="password"
+          label="Wachtwoord*"
+          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+          hint="Tenminste 5 karakters"
+          counter
+          @click:append="show1 = !show1"
+          :type="show1 ? 'text' : 'password'"
           v-model="password"
-          label="Password"
+          prepend-icon="mdi-lock"
+          :rules="[rules.required, rules.min]"
           required
         ></v-text-field>
 
-        <v-btn type="submit" color="primary"> Log in </v-btn>
+        <v-btn type="submit" color="#018245" class="ma-2 white--text">
+          Log in
+        </v-btn>
       </v-form>
     </v-container>
 
-    <p>Geen begeleider?</p>
-    <v-btn class="adminbutton" color="primary">
-      <router-link
-        to="/admin-login"
-        active-class="active"
-        tag="button"
-        exact
-        class="nav-btn"
-      >
-        log in als beheerder
-      </router-link>
-    </v-btn>
+    <v-container class="adminlogin">
+     <div class="tekst">
+        <p>Geen begeleider?</p>
+      </div>
+        <v-btn class="adminbutton" color="green" outlined>
+          <router-link
+            to="/admin-login"
+            active-class="active"
+            tag="button"
+            exact
+            class="nav-btn"
+          >
+            log in als beheerder
+          </router-link>
+        </v-btn>
+    </v-container>
   </div>
 </template>
 
@@ -55,6 +66,19 @@ export default {
     return {
       email: "",
       password: "",
+      show1: false,
+      rules: {
+        required: (value) => !!value || "Verplicht",
+        max: (value) => (value || "").length <= 20 || "Max 20 karakters",
+        min: (value) => (value || "").length > 4 || "Min 5 karakters",
+        tel: (value) =>
+          (value || "").length == 10 ||
+          "Telefoonnummer moet 10 karakters hebben",
+        email: (value) => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return pattern.test(value) || "Incorrect mail-adres.";
+        },
+      },
     };
   },
   methods: {
@@ -79,13 +103,12 @@ export default {
         localStorage.setItem("token", res.token);
 
         this.$store.commit("setAuthentication", true);
-        console.log("De login state is veranderd naar true!")
 
         let redirect_url =
           this.$route.query.redirect || "/begeleider-dashboard";
         this.$router.push(redirect_url);
-      } else if (res !== 200){
-        console.log('Je hebt een fout gemaakt')
+      } else if (res.val == false) {
+        console.log("Je hebt een fout gemaakt");
         alert("Vekeerde login gegevens.");
       }
     },
@@ -108,6 +131,27 @@ export default {
 }
 
 .image {
-  margin-top: 1em;
+  margin-top: 10em;
+}
+
+.adminlogin {
+  padding-top: 5em;
+  float: center;
+  max-width: 20%;
+  clear: both;
+}
+
+.tekst {
+  float: left;
+  text-align: center;
+  min-width: 50%;
+  max-width: 50%;
+}
+
+.adminbutton {
+  float: right;
+  text-align: center;
+  min-width: 50%;
+  max-width: 50%;
 }
 </style>

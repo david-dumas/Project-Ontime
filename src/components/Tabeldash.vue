@@ -17,7 +17,7 @@
           <!-- Selecteren uit de lijst -->
 
           <!-- :value="itemSelected" kan nog bij de v-simple-checkbox worden toegevoegd. -->
-          <template v-slot:item.selected="{ item }">
+          <template v-slot:item.seGlected="{ item }">
             <v-simple-checkbox
               :ripple="false"
               v-model="item.selected"
@@ -150,7 +150,7 @@ export default {
     dialogEdit: false,
     dialogDelete: false,
     dialogOpen: false,
-    selected: [],
+    //selected: [],
     headers: [
       { text: "Voornaam", value: "firstname" },
       { text: "Achternaam", value: "lastname" },

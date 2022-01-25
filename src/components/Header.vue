@@ -35,7 +35,6 @@
         </router-link>
       </v-btn>
 
-
       <!-- @click="logout" LOGUIT FUNCTIE DIE WE (NOG NIET) GEBRUIKEN -->
       <v-btn class="button" depressed color="white">
         <router-link

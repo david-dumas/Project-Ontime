@@ -11,7 +11,6 @@
         @submit.prevent="Loginform"
         method="POST"
         ref="form"
-        v-model="valid"
         lazy-validation
       >
         <v-text-field
@@ -69,7 +68,7 @@ export default {
         let redirect_url = this.$route.query.redirect || "/admin-dashboard";
         this.$router.push(redirect_url);
 
-      } else if (res.val != true) { 
+      } else if (res.val == false) { 
           alert("Verkeerde beheerder gegevens.")
       }
     },
