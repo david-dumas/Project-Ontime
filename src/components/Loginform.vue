@@ -44,7 +44,7 @@
      <div class="tekst">
         <p>Geen begeleider?</p>
       </div>
-        <v-btn class="adminbutton" color="green" outlined>
+        <v-btn class="adminbutton" color="#018245" outlined>
           <router-link
             to="/admin-login"
             active-class="active"
@@ -137,7 +137,7 @@ export default {
 .adminlogin {
   padding-top: 5em;
   float: center;
-  max-width: 20%;
+  max-width: 22%;
   clear: both;
 }
 

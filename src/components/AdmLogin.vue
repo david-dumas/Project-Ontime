@@ -28,7 +28,7 @@
           required
         ></v-text-field>
 
-        <v-btn type="submit" color="primary"> Log in </v-btn>
+        <v-btn type="submit" color="#018245" class="ma-2 white--text"> Log in </v-btn>
       </v-form>
     </v-container>
   </div>
@@ -78,7 +78,7 @@ export default {
 
 <style scoped>
 .login {
-  margin-top: 40px;
+  margin-top: 10em;
   text-align: center;
 }
 
