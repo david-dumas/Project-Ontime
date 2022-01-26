@@ -107,7 +107,7 @@ export default {
         let redirect_url =
           this.$route.query.redirect || "/begeleider-dashboard";
         this.$router.push(redirect_url);
-      } else if (res.val == false) {
+      } else if (res.status == false) {
         console.log("Je hebt een fout gemaakt");
         alert("Vekeerde login gegevens.");
       }

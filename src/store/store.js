@@ -10,7 +10,7 @@ const store = new Vuex.Store({
 
     state: {
         isAuthenticated: false,
-        isSelected: false
+        isSelected: false,
     },
     getters: {
 
@@ -24,7 +24,7 @@ const store = new Vuex.Store({
         },
         setSelection(state, status) {
             state.isSelected = status;
-        }
+        },
     }
 })
 

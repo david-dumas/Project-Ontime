@@ -16,16 +16,20 @@
         >
           <!-- Selecteren uit de lijst -->
 
+          <!-- @change="update" -->
+
           <!-- :value="itemSelected" kan nog bij de v-simple-checkbox worden toegevoegd. -->
           <template v-slot:item.selected="{ item }">
             <v-simple-checkbox
               :ripple="false"
               v-model="item.selected"
               enabled
-              @change="update"
+              v-on:click="update"
             ></v-simple-checkbox>
           </template>
         </v-data-table>
+
+        <v-btn v-on:click="setfalse"> Setselection: false </v-btn>
       </v-card>
     </div>
 
@@ -187,20 +191,19 @@ export default {
   },
 
   methods: {
+    
+    setfalse(){
+      this.$store.commit("setSelection", false)
+      console.log("de store is veranderd naar false")
+      window.location.href="begeleider-dashboard";
+    },
 
     update() {
       this.$store.commit("setSelection", true);
       console.log("De state is veranderd naar true!")
+      window.location.href="begeleider-dashboard";
     },
 
-    selectedClients() {
-      if (store.state.isSelected == false) {
-        //don't show events
-      } else if (store.state.isSelected == true){
-        //do show events
-      }
-    },
-    
     // Haalt clienten op uit firebase
     async getClient() {
       let snapshot = await db.collection("Clienten").get();
@@ -271,6 +274,8 @@ export default {
       this.dialogEdit = false;
     },
     async getEvents() {
+      //if statement of de events moeten worden laten zien gebaseerd op de isSelected state
+      if (store.state.isSelected == true) {
       let snapshot = await db.collection("calEvent").get();
       let events = [];
       snapshot.forEach((doc) => {
@@ -279,6 +284,9 @@ export default {
         events.push(appData);
       });
       this.events = events;
+      } else  if(store.state.isSelected == false){
+        console.log("je bent een debiel")
+      }
     },
 
     viewDay({ date }) {
@@ -309,12 +317,12 @@ export default {
       if (this.selectedOpen) {
         this.selectedOpen = false;
         requestAnimationFrame(() => requestAnimationFrame(() => open()));
-      } else {
+      } else{
         open();
       }
-
-      nativeEvent.stopPropagation();
+        nativeEvent.stopPropagation();
     },
+
     updateRange({ start, end }) {
       const events = [];
 

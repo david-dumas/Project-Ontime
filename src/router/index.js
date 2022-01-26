@@ -71,31 +71,3 @@ const router = new VueRouter({
 });
 
 export default router
-
-/* // Voordat de router de component laadt, wordt er gecontroleerd of de route een meta field heeft met requiresAuth.
-router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (localStorage.getItem("token") == null) {
-      next({
-        //redirect naar login page als gebruiker geen token heeftß
-        path: "/",
-        //relative url omzetten naar full url
-        params: { nextUrl: to.fullPath },
-      });
-    } else {
-      //redirect naar login page als er token is verlopen
-      if (!store.state.isAuthenticated) {
-        next({
-          path: "/",
-          //relative url omzetten naar full url
-          params: { nextUrl: to.fullPath },
-        });
-      } else {
-        next();
-      }
-    }
-  } else {
-    next();
-  }
-}); */
-
