@@ -46,13 +46,28 @@
             <v-card-text class="black--text text-body1">
               <v-col cols="12">
                 <v-row>
-                  {{ selected.firstname }} {{ selected.lastname }}
+                  <div>
+                    <v-icon class="mr-2 m-2 p-2">
+                      mdi-account
+                    </v-icon>
+                    {{ selected.firstname }} {{ selected.lastname }}
+                  </div>
                 </v-row>
                 <v-row>
-                  {{ selected.email }}
+                  <div>
+                    <v-icon class="mr-2 m-2 p-2">
+                      mdi-email
+                    </v-icon>
+                    {{ selected.email }}
+                  </div>
                 </v-row>
                 <v-row>
-                  {{ selected.phonenmbr }}
+                  <div>
+                    <v-icon class="mr-2 m-2 p-2">
+                      mdi-phone
+                    </v-icon>
+                    {{ selected.phonenmbr }}
+                  </div>
                 </v-row>
               </v-col>
             </v-card-text>
@@ -61,9 +76,7 @@
               <v-icon class="mr-2" @click="editItem(selected)">
                 mdi-pencil
               </v-icon>
-              <v-icon class="mr-2" @click="deleteItem()">
-                mdi-delete
-              </v-icon>
+              <v-icon class="mr-2" @click="deleteItem()"> mdi-delete </v-icon>
 
               <v-spacer></v-spacer>
             </v-card-actions>
@@ -116,6 +129,7 @@
                         :rules="[rules.required, rules.tel]"
                         pattern="^\d{10}$"
                         type="tel"
+                        counter
                         required
                       ></v-text-field>
                     </v-col>
@@ -136,10 +150,10 @@
                     </v-col>
                   </v-row>
                 </v-container>
-                <small>*indicates required field</small>
+                <small>*Verplichte velden</small>
                 <v-btn color="red" text left class="left" @click="closeEdit">
                   <v-icon>mdi-delete</v-icon>
-                  Close
+                  Annuleren
                 </v-btn>
                 <v-btn
                   color="green"
@@ -165,7 +179,7 @@
     </template>
     <!-- Geen data -->
     <template v-slot:no-data>
-      <p>No data</p>
+      <p>Geen data</p>
     </template>
   </v-data-table>
 </template>
@@ -197,16 +211,16 @@ export default {
         (value || "").length == 10 || "Telefoonnummer moet 10 karakters hebben",
       email: (value) => {
         const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return pattern.test(value) || "Invalid e-mail.";
+        return pattern.test(value) || "Incorrecte e-mail.";
       },
     },
   }),
   created() {
-    this.getAttendants();
+    this.getAttendant();
   },
   methods: {
     // Haalt begeleiders op uit firebase
-    async getAttendants() {
+    async getAttendant() {
       let snapshot = await db.collection("Begeleiders").get();
       let attendants = [];
       snapshot.forEach((doc) => {
@@ -223,7 +237,7 @@ export default {
         .collection("Begeleiders")
         .doc(item)
         .delete();
-      this.getAttendants();
+      this.getAttendant();
       this.dialogDelete = false;
       this.dialogOpen = false;
     },
@@ -239,8 +253,9 @@ export default {
           phonenmbr: item.phonenmbr,
           password: item.password,
         });
-      this.getAttendants();
+      this.getAttendant();
       this.dialogEdit = false;
+      this.dialogOpen = false;
     },
     // Opent dialog om gegevens te bewerken
     editItem() {
@@ -266,6 +281,8 @@ export default {
     // Sluit de edit dialog af
     closeEdit() {
       this.dialogEdit = false;
+      this.dialogOpen = false;
+      this.getAttendant();
     },
   },
 };

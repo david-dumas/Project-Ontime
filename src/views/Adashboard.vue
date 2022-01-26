@@ -1,7 +1,6 @@
 <template>
   <div classname="adashboard">
     <AHeader />
-    <br />
     <h1>Admin Dashboard</h1>
     <div class="tables">
       <v-container>
@@ -43,6 +42,8 @@ export default {
 <style scoped>
 h1 {
   text-align: center;
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 v-col {
   width: 300px;

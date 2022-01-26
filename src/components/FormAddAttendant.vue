@@ -59,6 +59,7 @@
                   pattern="^\d{10}$"
                   type="tel"
                   required
+                  counter
                 ></v-text-field>
               </v-col>
 
@@ -78,10 +79,10 @@
               </v-col>
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
+          <small>*Verplichte velden</small>
           <v-btn color="red" text left class="left" @click="close">
             <v-icon>mdi-delete</v-icon>
-            Close
+            Annuleren
           </v-btn>
           <v-btn color="green" text right class="left" type="submit">
             <v-icon>mdi-content-save</v-icon>
@@ -112,7 +113,7 @@ export default {
         (value || "").length == 10 || "Telefoonnummer moet 10 karakters hebben",
       email: (value) => {
         const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return pattern.test(value) || "Invalid e-mail.";
+        return pattern.test(value) || "Incorrecte e-mail.";
       },
     },
   }),

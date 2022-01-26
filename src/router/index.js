@@ -1,71 +1,74 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Login from '../views/Login';
-import Bdashboard from '../views/Bdashboard';
-import Adashboard from '../views/Adashboard';
-import Agenda from '../views/Agenda';
-import store from '../store/store'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Login from "../views/Login";
+import Bdashboard from "../views/Bdashboard";
+import Adashboard from "../views/Adashboard";
+import Agenda from "../views/Agenda";
+import store from "../store/store";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'Login',
+    path: "/",
+    name: "Login",
     component: Login,
   },
   {
-    path: '/begeleider-dashboard',
-    name: 'Bdashboard',
+    path: "/begeleider-dashboard",
+    name: "Bdashboard",
     component: Bdashboard,
     /* Navigation guard zodat gebruiker niet vanaf adresbalk de inlog kan omzeilen */
     beforeEnter: (to, from, next) => {
       if (store.state.isAuthenticated == false) {
-        next('/');
-      } if (localStorage.getItem("token") == null) {
-        next('/');
+        next("/");
+      }
+      if (localStorage.getItem("token") == null) {
+        next("/");
       } else {
         next();
       }
     },
   },
   {
-    path: '/admin-dashboard',
-    name: 'Adashboard',
+    path: "/admin-dashboard",
+    name: "Adashboard",
     component: Adashboard,
     beforeEnter: (to, from, next) => {
       if (store.state.isAuthenticated == false) {
-        next('/');
-      } if (localStorage.getItem("token") == null) {
-        next('/');
+        next("/");
+      }
+      if (localStorage.getItem("token") == null) {
+        next("/");
       } else {
         next();
       }
     },
   },
   {
-    path: '/agenda',
-    name: 'Agenda',
+    path: "/agenda",
+    name: "Agenda",
     component: Agenda,
     beforeEnter: (to, from, next) => {
       if (store.state.isAuthenticated == false) {
-        next('/');
-      } if (localStorage.getItem("token") == null) {
-        next('/');
-      }  else {
+        next("/");
+      }
+      if (localStorage.getItem("token") == null) {
+        next("/");
+      } else {
         next();
       }
     },
-  }
-]
+  },
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
 });
 
-export default router
+export default router;
 
 /* // Voordat de router de component laadt, wordt er gecontroleerd of de route een meta field heeft met requiresAuth.
 router.beforeEach((to, from, next) => {
@@ -93,4 +96,3 @@ router.beforeEach((to, from, next) => {
     next();
   }
 }); */
- 
