@@ -41,20 +41,20 @@
     </v-container>
 
     <v-container class="adminlogin">
-     <div class="tekst">
+      <div class="tekst">
         <p>Geen begeleider?</p>
       </div>
-        <v-btn class="adminbutton" color="#018245" outlined>
-          <router-link
-            to="/admin-login"
-            active-class="active"
-            tag="button"
-            exact
-            class="nav-btn"
-          >
-            log in als beheerder
-          </router-link>
-        </v-btn>
+      <v-btn class="adminbutton" color="#018245" outlined>
+        <router-link
+          to="/admin-login"
+          active-class="active"
+          tag="button"
+          exact
+          class="nav-btn"
+        >
+          log in als beheerder
+        </router-link>
+      </v-btn>
     </v-container>
   </div>
 </template>
@@ -107,8 +107,7 @@ export default {
         let redirect_url =
           this.$route.query.redirect || "/begeleider-dashboard";
         this.$router.push(redirect_url);
-      } else if (res.status == false) {
-        console.log("Je hebt een fout gemaakt");
+      } else {
         alert("Vekeerde login gegevens.");
       }
     },

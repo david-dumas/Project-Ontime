@@ -14,17 +14,13 @@
           sort-by="lastname"
           class="elevation-1"
         >
-          <!-- Selecteren uit de lijst -->
-
-          <!-- @change="update" -->
-
-          <!-- :value="itemSelected" kan nog bij de v-simple-checkbox worden toegevoegd. -->
+  
           <template v-slot:item.selected="{ item }">
             <v-simple-checkbox
               :ripple="false"
               v-model="item.selected"
               enabled
-              v-on:click="update"
+              v-on:click="update();"
             ></v-simple-checkbox>
           </template>
         </v-data-table>
@@ -191,7 +187,7 @@ export default {
   },
 
   methods: {
-    
+
     setfalse(){
       this.$store.commit("setSelection", false)
       console.log("de store is veranderd naar false")

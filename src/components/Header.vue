@@ -35,7 +35,6 @@
         </router-link>
       </v-btn>
 
-      <!-- @click="logout" LOGUIT FUNCTIE DIE WE (NOG NIET) GEBRUIKEN -->
       <v-btn class="button" depressed color="white">
         <router-link
           to="/"
@@ -61,17 +60,6 @@ export default {
   },
 };
 
-/* Loguit functie die kan worden aangeroepen na klikken log uit knop 
-
-logout({commit}){
-  return new Promise((resolve, reject) => {
-    commit('logout')
-    this.$store.commit("setAuthentication", false);
-    localStorage.removeItem('token')
-  })
-}
-
-*/
 </script>
 
 <style>

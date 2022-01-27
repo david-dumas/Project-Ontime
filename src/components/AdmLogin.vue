@@ -68,7 +68,7 @@ export default {
         let redirect_url = this.$route.query.redirect || "/admin-dashboard";
         this.$router.push(redirect_url);
 
-      } else if (res.val == false) { 
+      } else { 
           alert("Verkeerde beheerder gegevens.")
       }
     },
