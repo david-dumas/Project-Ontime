@@ -25,8 +25,6 @@
             ></v-simple-checkbox>
           </template>
         </v-data-table>
-
-        <v-btn v-on:click="setfalse"> Setselection: false </v-btn>
       </v-card>
     </div>
 
@@ -199,18 +197,14 @@ export default {
       this.$store.commit("mutateSelected", item.id);
       let selected = this.$store.state.selected;
 
-      // console.log(selected);
-      //console.log(this.selectedEvents);
-
       if (selected.length == 0) {
         this.selectedEvents = this.events;
         return;
       }
 
-      this.selectedEvents = this.events.filter((item) =>
+      this.selectedEvents = this.events.filter((item) => 
         selected.includes(item.clientid)
       );
-      //console.log(this.selectedEvents);
     },
 
     // Haalt clienten op uit firebase
