@@ -273,7 +273,7 @@ def login_request_attendant():
     is_non_empty=bool(user)
 
     if is_non_empty == False:
-        return jsonify({"Val" : "False"})
+        return jsonify({"val" : "false"})
     if user.password == password:
         session["active"] = True
         session.modified = True
@@ -284,9 +284,9 @@ def login_request_attendant():
         }
 
         token = jwt.encode(payload, "secret", algorithm="HS256")
-        return jsonify({"Val" : "True", "token" : token.decode()})
+        return jsonify({"val" : "true", "token" : token.decode()})
     else:
-        return jsonify({"Val" : "False"})
+        return jsonify({"val" : "false"})
 
 
 # Login admin
@@ -305,7 +305,7 @@ def login_request_admin():
     is_non_empty=bool(user)
 
     if is_non_empty == False:
-        return jsonify({"Val" : "False"})
+        return jsonify({"val" : "false"})
     if user.password == password:
         session["active"] = True
         session.modified = True
@@ -316,9 +316,9 @@ def login_request_admin():
         }
 
         token = jwt.encode(payload, "secret", algorithm="HS256")
-        return jsonify({"Val" : "True", "token" : token.decode()})
+        return jsonify({"val" : "true", "token" : token.decode()})
     else:
-        return jsonify({"Val" : "False"})
+        return jsonify({"val" : "false"})
 
 
 if __name__ == "__main__":
