@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask import request, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
 
+
 app = flask.Flask(__name__)
 CORS(app, supports_credentials=True)
 app.config["DEBUG"] = True
@@ -33,6 +34,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 admin_manager = LoginManager()
 admin_manager.init_app(app)
+attendant_manager = LoginManager()
+attendant_manager.init_app(app)
 
 
 # Attendant table
@@ -45,7 +48,7 @@ class attendant(UserMixin, db.Model):
 	password = db.Column(db.String(50))
 
 
-# Attendant table
+# Admin table
 class admin(UserMixin, db.Model):
 	id = db.Column(db.Integer, primary_key=True) 
 	firstname = db.Column(db.String(50))
@@ -96,6 +99,7 @@ def add_contact():
             print("MySQL connection is closed")
 
 
+# add attendant
 @app.route("/addattendant", methods = ["POST"])
 def add_attendant():
     addattendant = request.get_json()
@@ -122,7 +126,7 @@ def add_attendant():
             print("MySQL connection is closed")
 
 
-# Requesting data from existing tables
+# Requesting data from contact table
 @app.route("/getcontact", methods = ["POST"])
 def get_contact_detail():
     getcontact = request.get_json()
@@ -145,6 +149,7 @@ def get_contact_detail():
             print("MySQL connection is closed")
 
 
+# get attendant
 @app.route("/getattendant", methods = ["GET"])
 def get_attendant_detail():
     data = executequery("getattendant")
@@ -179,7 +184,7 @@ def executequery(getattendant):
             print("MySQL connection is closed")
 
 
-
+# get all events
 @app.route("/getevents", methods = ["GET"])
 def get_event_detail():
     try:
@@ -230,7 +235,7 @@ def update_attendant():
 
 
 # Deleting data in existing tables
-@app.route("/deleteattendantv1", methods = ["POST"])
+@app.route("/deleteattendant", methods = ["POST"])
 def delete_attendant_detail():
     delete_attendant = request.get_json()
     id = delete_attendant["id"]
@@ -253,9 +258,9 @@ def delete_attendant_detail():
 
 
 # Login attendant
-@login_manager.user_loader
-def load_attendant(user_id):
-    return attendant.query.get(int(user_id))
+@attendant_manager.user_loader
+def load_attendant(attendant_id):
+    return attendant.query.get(int(attendant_id))
 
 # Login authentication
 @app.route("/login_request_attendant", methods = ["POST"])
@@ -264,31 +269,24 @@ def login_request_attendant():
     email = data["email"]
     password = data["password"]
 
-# Database query
     user = attendant.query.filter_by(email=email).first()
+    is_non_empty=bool(user)
 
-# Password check
+    if is_non_empty == False:
+        return jsonify({"message" : "Wrong email"})
     if user.password == password:
         session["active"] = True
         session.modified = True
-        response = ("it works")
-        response = jsonify(val=True)
-    if not user:
-        response = jsonify(val=False)
+        payload = {
+            "id": user.id,
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+            "iat": datetime.datetime.utcnow()
+        }
 
-    response.headers.add("Access-Control-Allow-Headers",
-                            "Origin, X-Requested-With, Content-Type, Accept, x-auth")
-
-    payload = {
-        "id": user.id,
-        "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
-        "iat": datetime.datetime.utcnow()
-    }
-
-# JWT token
-    token = jwt.encode(payload, "secret", algorithm="HS256")
-
-    return jsonify({"val" : True, "token" : token.decode()})
+        token = jwt.encode(payload, "secret", algorithm="HS256")
+        return jsonify({"Val" : "True", "token" : token.decode()})
+    else:
+        return jsonify({"message" : "wrong password"})
 
 
 # Login admin
@@ -303,31 +301,24 @@ def login_request_admin():
     email = data["email"]
     password = data["password"]
 
-# Database query
     user = admin.query.filter_by(email=email).first()
+    is_non_empty=bool(user)
 
-# Password check
+    if is_non_empty == False:
+        return jsonify({"message" : "Wrong email"})
     if user.password == password:
         session["active"] = True
         session.modified = True
-        response = ("it works")
-        response = jsonify(val=True)
-    if not user:
-        response = jsonify(val=False)
+        payload = {
+            "id": user.id,
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+            "iat": datetime.datetime.utcnow()
+        }
 
-    response.headers.add("Access-Control-Allow-Headers",
-                            "Origin, X-Requested-With, Content-Type, Accept, x-auth")
-
-    payload = {
-        "id": user.id,
-        "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
-        "iat": datetime.datetime.utcnow()
-    }
-
-# JWT token
-    token = jwt.encode(payload, "secret", algorithm="HS256")
-
-    return jsonify({"val" : True, "token" : token.decode()})
+        token = jwt.encode(payload, "secret", algorithm="HS256")
+        return jsonify({"Val" : "True", "token" : token.decode()})
+    else:
+        return jsonify({"message" : "wrong password"})
 
 
 if __name__ == "__main__":
