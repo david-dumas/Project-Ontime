@@ -19,11 +19,11 @@
             >
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete"
+              <v-btn color="red darken-1" text @click="closeDelete"
                 >Cancel</v-btn
               >
               <v-btn
-                color="blue darken-1"
+                color="green darken-1"
                 text
                 @click="deleteAttendant(selected.id)"
                 >OK</v-btn
@@ -240,6 +240,7 @@ export default {
       this.getAttendant();
       this.dialogDelete = false;
       this.dialogOpen = false;
+      alert("Begeleider is verwijderd");
     },
     // Update begeleiders in firebase
     async updateAttendant(item) {
@@ -256,6 +257,7 @@ export default {
       this.getAttendant();
       this.dialogEdit = false;
       this.dialogOpen = false;
+      alert("Begeleider is gewijzigd");
     },
     // Opent dialog om gegevens te bewerken
     editItem() {

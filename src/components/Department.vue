@@ -19,11 +19,11 @@
             >
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete"
+              <v-btn color="red darken-1" text @click="closeDelete"
                 >Cancel</v-btn
               >
               <v-btn
-                color="blue darken-1"
+                color="green darken-1"
                 text
                 @click="deleteDepartment(selected.id)"
                 >OK</v-btn
@@ -241,6 +241,7 @@ export default {
       this.getDepartment();
       this.dialogDelete = false;
       this.dialogOpen = false;
+      alert("Afdeling is verwijderd");
     },
     // Update afdeling in firebase
     async updateDepartment(item) {
@@ -256,6 +257,7 @@ export default {
       this.getDepartment();
       this.dialogEdit = false;
       this.dialogOpen = false;
+      alert("Afdeling is gewijzigd");
     },
     // Opent dialog om gegevens te bewerken
     editItem() {
