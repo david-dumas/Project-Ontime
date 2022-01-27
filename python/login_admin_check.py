@@ -68,6 +68,11 @@ class events(db.Model):
     client = db.Column(db.String(50))
 
 
+# Login admin
+@admin_manager.user_loader
+def load_admin(admin_id):
+    return admin.query.get(int(admin_id))
+
 # Login authentication
 @app.route("/login_request_admin", methods = ["POST"])
 def login_request_admin():
