@@ -6,14 +6,16 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
 
-    plugins: [createPersistedState()],
+   plugins: [createPersistedState({
+       paths: ['isAuthenticated']
+   })],
 
     state: {
         isAuthenticated: false,
-        isSelected: false,
+        selected: new Array()
     },
     getters: {
-
+        
     },
     actions: {
 
@@ -22,9 +24,16 @@ const store = new Vuex.Store({
         setAuthentication(state, status) {
             state.isAuthenticated = status;
         },
-        setSelection(state, status) {
-            state.isSelected = status;
-        },
+        mutateSelected(state, id) {
+            let index = state.selected.indexOf(id);
+
+            if (index == -1) {
+                state.selected.push(id);
+                return;
+            }
+
+            state.selected.splice(index, 1);
+        }
     }
 })
 

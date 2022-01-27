@@ -14,13 +14,14 @@
           sort-by="lastname"
           class="elevation-1"
         >
-  
+          <!-- KLHWDEYCLKHYER.KERVHC.ERVLHCE.RLVCHERF.LCJE,ECFHCEFHKECFHK.ECF.KEF C.ECF .HKEFCHK.EF HKEF .KHEFC  -->
+
           <template v-slot:item.selected="{ item }">
             <v-simple-checkbox
               :ripple="false"
               v-model="item.selected"
               enabled
-              v-on:click="update();"
+              v-on:click="update($event, item)"
             ></v-simple-checkbox>
           </template>
         </v-data-table>
@@ -61,7 +62,7 @@
                       ref="calendar"
                       v-model="focus"
                       color="#018245"
-                      :events="events"
+                      :events="selectedEvents"
                       :type="type"
                       @click:event="showEvent"
                       @click:more="viewDay"
@@ -141,7 +142,7 @@
 
 <script>
 import { db } from "@/main";
-import store from '../store/store';
+//import store from '../store/store';
 
 export default {
   name: "Tabeldash",
@@ -175,6 +176,7 @@ export default {
     selectedElement: null,
     selectedOpen: false,
     events: [],
+    selectedEvents: [],
     dialog: false,
   }),
   created() {
@@ -187,17 +189,28 @@ export default {
   },
 
   methods: {
-
-    setfalse(){
-      this.$store.commit("setSelection", false)
-      console.log("de store is veranderd naar false")
-      window.location.href="begeleider-dashboard";
+    setfalse() {
+      this.$store.commit("setSelection", false);
+      console.log("de store is veranderd naar false");
+      window.location.href = "begeleider-dashboard";
     },
 
-    update() {
-      this.$store.commit("setSelection", true);
-      console.log("De state is veranderd naar true!")
-      window.location.href="begeleider-dashboard";
+    update(event, item) {
+      this.$store.commit("mutateSelected", item.id);
+      let selected = this.$store.state.selected;
+
+      // console.log(selected);
+      //console.log(this.selectedEvents);
+
+      if (selected.length == 0) {
+        this.selectedEvents = this.events;
+        return;
+      }
+
+      this.selectedEvents = this.events.filter((item) =>
+        selected.includes(item.clientid)
+      );
+      //console.log(this.selectedEvents);
     },
 
     // Haalt clienten op uit firebase
@@ -271,7 +284,6 @@ export default {
     },
     async getEvents() {
       //if statement of de events moeten worden laten zien gebaseerd op de isSelected state
-      if (store.state.isSelected == true) {
       let snapshot = await db.collection("calEvent").get();
       let events = [];
       snapshot.forEach((doc) => {
@@ -280,9 +292,7 @@ export default {
         events.push(appData);
       });
       this.events = events;
-      } else  if(store.state.isSelected == false){
-        console.log("je bent een debiel")
-      }
+      this.selectedEvents = events;
     },
 
     viewDay({ date }) {
@@ -313,10 +323,10 @@ export default {
       if (this.selectedOpen) {
         this.selectedOpen = false;
         requestAnimationFrame(() => requestAnimationFrame(() => open()));
-      } else{
+      } else {
         open();
       }
-        nativeEvent.stopPropagation();
+      nativeEvent.stopPropagation();
     },
 
     updateRange({ start, end }) {

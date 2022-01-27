@@ -31,7 +31,7 @@ export default {
 <style>
 .Titel {
   text-align: center;
-  margin-top: 1em;
+  margin-top: 3em;
 }
 
 .calendar {
