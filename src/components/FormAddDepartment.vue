@@ -26,6 +26,7 @@
                   label="Afdelingnaam*"
                   v-model="name"
                   prepend-icon="mdi-office-building"
+                  :rules="[rules.required, rules.max]"
                   required
                 ></v-text-field>
               </v-col>
@@ -35,6 +36,7 @@
                   label="Locatie*"
                   v-model="location"
                   prepend-icon="mdi-map-marker"
+                  :rules="[rules.required, rules.max]"
                   required
                 ></v-text-field>
               </v-col>
@@ -44,6 +46,11 @@
                   label="Telefoonnummer*"
                   v-model="phonenmbr"
                   prepend-icon="mdi-phone"
+                  :rules="[rules.required, rules.tel]"
+                  pattern="^\d{10}$"
+                  type="tel"
+                  required
+                  counter
                 ></v-text-field>
               </v-col>
 
@@ -53,14 +60,15 @@
                   :items="names"
                   label="Hoofdbegeleider*"
                   v-model="headattendant"
+                  required
                 ></v-select>
               </v-col>
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
+          <small>*Verplichte velden</small>
           <v-btn color="red" text @click="close">
             <v-icon>mdi-delete</v-icon>
-            Close
+            Annuleren
           </v-btn>
           <v-btn color="green" text type="submit">
             <v-icon>mdi-content-save</v-icon>
@@ -83,6 +91,12 @@ export default {
     headattendant: "",
     attendants: [],
     names: [],
+    rules: {
+      required: (value) => !!value || "Verplicht",
+      max: (value) => (value || "").length <= 20 || "Max 20 karakters",
+      tel: (value) =>
+        (value || "").length == 10 || "Telefoonnummer moet 10 karakters hebben",
+    },
   }),
   mounted() {
     this.getDepartment();

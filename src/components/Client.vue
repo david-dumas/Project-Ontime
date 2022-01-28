@@ -19,11 +19,11 @@
             >
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete"
+              <v-btn color="red darken-1" text @click="closeDelete"
                 >Cancel</v-btn
               >
               <v-btn
-                color="blue darken-1"
+                color="green darken-1"
                 text
                 @click="deleteClient(selected.id)"
                 >OK</v-btn
@@ -46,19 +46,44 @@
             <v-card-text class="black--text text-body1">
               <v-col cols="12">
                 <v-row>
-                  {{ selected.firstname }} {{ selected.lastname }}
+                  <div>
+                    <v-icon class="mr-2 m-2 p-2">
+                      mdi-account
+                    </v-icon>
+                    {{ selected.firstname }} {{ selected.lastname }}
+                  </div>
                 </v-row>
                 <v-row>
-                  {{ selected.email }}
+                  <div>
+                    <v-icon class="mr-2 m-2 p-2">
+                      mdi-email
+                    </v-icon>
+                    {{ selected.email }}
+                  </div>
                 </v-row>
                 <v-row>
-                  {{ selected.phonenmbr }}
+                  <div>
+                    <v-icon class="mr-2 m-2 p-2">
+                      mdi-phone
+                    </v-icon>
+                    {{ selected.phonenmbr }}
+                  </div>
                 </v-row>
                 <v-row>
-                  {{ selected.cardnmbr }}
+                  <div>
+                    <v-icon class="mr-2 m-2 p-2">
+                      mdi-card-account-details
+                    </v-icon>
+                    {{ selected.cardnmbr }}
+                  </div>
                 </v-row>
                 <v-row>
-                  {{ selected.department }}
+                  <div>
+                    <v-icon class="mr-2 m-2 p-2">
+                      mdi-office-building
+                    </v-icon>
+                    {{ selected.department }}
+                  </div>
                 </v-row>
               </v-col>
             </v-card-text>
@@ -88,6 +113,7 @@
                         label="Voornaam*"
                         v-model="selected.firstname"
                         prepend-icon="mdi-account"
+                        :rules="[rules.required, rules.max]"
                         required
                       ></v-text-field>
                     </v-col>
@@ -96,6 +122,7 @@
                       <v-text-field
                         label="Achternaam*"
                         v-model="selected.lastname"
+                        :rules="[rules.required, rules.max]"
                         required
                       ></v-text-field>
                     </v-col>
@@ -105,6 +132,7 @@
                         label="Email*"
                         v-model="selected.email"
                         prepend-icon="mdi-email"
+                        :rules="[rules.required, rules.email]"
                         required
                       ></v-text-field>
                     </v-col>
@@ -114,7 +142,11 @@
                         label="Telefoonnummer*"
                         v-model="selected.phonenmbr"
                         prepend-icon="mdi-phone"
+                        :rules="[rules.required, rules.tel]"
+                        pattern="^\d{10}$"
+                        type="tel"
                         required
+                        counter
                       ></v-text-field>
                     </v-col>
 
@@ -123,6 +155,8 @@
                         label="Zorgpasnummer*"
                         v-model="selected.cardnmbr"
                         prepend-icon="mdi-card-account-details"
+                        :rules="[rules.required, rules.max]"
+                        type="number"
                         required
                       ></v-text-field>
                     </v-col>
@@ -133,14 +167,15 @@
                         :items="names"
                         label="Afdeling*"
                         v-model="selected.department"
+                        required
                       ></v-select>
                     </v-col>
                   </v-row>
                 </v-container>
-                <small>*indicates required field</small>
+                <small>*Verplichte velden</small>
                 <v-btn color="red" text left class="left" @click="closeEdit">
                   <v-icon>mdi-delete</v-icon>
-                  Close
+                  Annuleren
                 </v-btn>
                 <v-btn
                   color="green"
@@ -166,7 +201,7 @@
     </template>
     <!-- Geen data -->
     <template v-slot:no-data>
-      <p>Please Wait</p>
+      <p>Geen data</p>
     </template>
   </v-data-table>
 </template>
@@ -191,6 +226,16 @@ export default {
     clienten: [],
     departments: [],
     names: [],
+    rules: {
+      required: (value) => !!value || "Verplicht",
+      max: (value) => (value || "").length <= 20 || "Max 20 karakters",
+      tel: (value) =>
+        (value || "").length == 10 || "Telefoonnummer moet 10 karakters hebben",
+      email: (value) => {
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return pattern.test(value) || "Incorrecte e-mail.";
+      },
+    },
   }),
   created() {
     this.getClient();
@@ -224,22 +269,32 @@ export default {
     },
     // Verwijderd clienten in firebase
     async deleteClient(item) {
-      await db.collection("Clienten").doc(item).delete();
+      await db
+        .collection("Clienten")
+        .doc(item)
+        .delete();
       this.getClient();
       this.dialogDelete = false;
       this.dialogOpen = false;
+      alert("Cliënt is verwijderd");
     },
     // Update clienten in firebase
     async updateClient(item) {
-      await db.collection("Clienten").doc(item.id).update({
-        firstname: item.firstname,
-        lastname: item.lastname,
-        email: item.email,
-        phonenmbr: item.phonenmbr,
-        cardnmbr: item.cardnmbr,
-      });
+      await db
+        .collection("Clienten")
+        .doc(item.id)
+        .update({
+          firstname: item.firstname,
+          lastname: item.lastname,
+          email: item.email,
+          phonenmbr: item.phonenmbr,
+          cardnmbr: item.cardnmbr,
+          department: item.department,
+        });
       this.getClient();
       this.dialogEdit = false;
+      this.dialogOpen = false;
+      alert("Cliënt is gewijzigd");
     },
     // Opent dialog om gegevens te bewerken
     editItem() {
@@ -265,6 +320,8 @@ export default {
     // Sluit de edit dialog af
     closeEdit() {
       this.dialogEdit = false;
+      this.dialogOpen = false;
+      this.getClient();
     },
   },
 };

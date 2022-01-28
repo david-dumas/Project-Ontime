@@ -19,11 +19,11 @@
             >
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete"
+              <v-btn color="red darken-1" text @click="closeDelete"
                 >Cancel</v-btn
               >
               <v-btn
-                color="blue darken-1"
+                color="green darken-1"
                 text
                 @click="deleteAttendant(selected.id)"
                 >OK</v-btn
@@ -46,13 +46,28 @@
             <v-card-text class="black--text text-body1">
               <v-col cols="12">
                 <v-row>
-                  {{ selected.firstname }} {{ selected.lastname }}
+                  <div>
+                    <v-icon class="mr-2 m-2 p-2">
+                      mdi-account
+                    </v-icon>
+                    {{ selected.firstname }} {{ selected.lastname }}
+                  </div>
                 </v-row>
                 <v-row>
-                  {{ selected.email }}
+                  <div>
+                    <v-icon class="mr-2 m-2 p-2">
+                      mdi-email
+                    </v-icon>
+                    {{ selected.email }}
+                  </div>
                 </v-row>
                 <v-row>
-                  {{ selected.phonenmbr }}
+                  <div>
+                    <v-icon class="mr-2 m-2 p-2">
+                      mdi-phone
+                    </v-icon>
+                    {{ selected.phonenmbr }}
+                  </div>
                 </v-row>
               </v-col>
             </v-card-text>
@@ -82,6 +97,7 @@
                         label="Voornaam*"
                         v-model="selected.firstname"
                         prepend-icon="mdi-account"
+                        :rules="[rules.required, rules.max]"
                         required
                       ></v-text-field>
                     </v-col>
@@ -90,6 +106,7 @@
                       <v-text-field
                         label="Achternaam*"
                         v-model="selected.lastname"
+                        :rules="[rules.required, rules.max]"
                         required
                       ></v-text-field>
                     </v-col>
@@ -99,6 +116,7 @@
                         label="Email*"
                         v-model="selected.email"
                         prepend-icon="mdi-email"
+                        :rules="[rules.required, rules.email]"
                         required
                       ></v-text-field>
                     </v-col>
@@ -108,24 +126,34 @@
                         label="Telefoonnummer*"
                         v-model="selected.phonenmbr"
                         prepend-icon="mdi-phone"
+                        :rules="[rules.required, rules.tel]"
+                        pattern="^\d{10}$"
+                        type="tel"
+                        counter
+                        required
                       ></v-text-field>
                     </v-col>
 
                     <v-col cols="12">
                       <v-text-field
-                        label="Password*"
-                        type="password"
-                        v-model="selected.password"
+                        label="Wachtwoord*"
+                        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                        hint="Tenminste 8 karakters"
+                        counter
+                        @click:append="show1 = !show1"
+                        :type="show1 ? 'text' : 'password'"
+                        v-model="password"
                         prepend-icon="mdi-lock"
+                        :rules="[rules.required, rules.min]"
                         required
                       ></v-text-field>
                     </v-col>
                   </v-row>
                 </v-container>
-                <small>*indicates required field</small>
+                <small>*Verplichte velden</small>
                 <v-btn color="red" text left class="left" @click="closeEdit">
                   <v-icon>mdi-delete</v-icon>
-                  Close
+                  Annuleren
                 </v-btn>
                 <v-btn
                   color="green"
@@ -151,7 +179,7 @@
     </template>
     <!-- Geen data -->
     <template v-slot:no-data>
-      <p>Please Wait</p>
+      <p>Geen data</p>
     </template>
   </v-data-table>
 </template>
@@ -174,6 +202,18 @@ export default {
       { text: "", value: "actions", sortable: false },
     ],
     attendants: [],
+    show1: false,
+    rules: {
+      required: (value) => !!value || "Verplicht",
+      max: (value) => (value || "").length <= 20 || "Max 20 karakters",
+      min: (value) => (value || "").length > 7 || "Min 8 karakters",
+      tel: (value) =>
+        (value || "").length == 10 || "Telefoonnummer moet 10 karakters hebben",
+      email: (value) => {
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return pattern.test(value) || "Incorrecte e-mail.";
+      },
+    },
   }),
   created() {
     this.getAttendant();
@@ -193,22 +233,31 @@ export default {
     },
     // Verwijderd begeleiders in firebase
     async deleteAttendant(item) {
-      await db.collection("Begeleiders").doc(item).delete();
+      await db
+        .collection("Begeleiders")
+        .doc(item)
+        .delete();
       this.getAttendant();
       this.dialogDelete = false;
       this.dialogOpen = false;
+      alert("Begeleider is verwijderd");
     },
     // Update begeleiders in firebase
     async updateAttendant(item) {
-      await db.collection("Begeleiders").doc(item.id).update({
-        firstname: item.firstname,
-        lastname: item.lastname,
-        email: item.email,
-        phonenmbr: item.phonenmbr,
-        password: item.password,
-      });
+      await db
+        .collection("Begeleiders")
+        .doc(item.id)
+        .update({
+          firstname: item.firstname,
+          lastname: item.lastname,
+          email: item.email,
+          phonenmbr: item.phonenmbr,
+          password: item.password,
+        });
       this.getAttendant();
       this.dialogEdit = false;
+      this.dialogOpen = false;
+      alert("Begeleider is gewijzigd");
     },
     // Opent dialog om gegevens te bewerken
     editItem() {
@@ -234,6 +283,8 @@ export default {
     // Sluit de edit dialog af
     closeEdit() {
       this.dialogEdit = false;
+      this.dialogOpen = false;
+      this.getAttendant();
     },
   },
 };

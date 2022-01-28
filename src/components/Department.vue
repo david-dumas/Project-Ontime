@@ -19,11 +19,11 @@
             >
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete"
+              <v-btn color="red darken-1" text @click="closeDelete"
                 >Cancel</v-btn
               >
               <v-btn
-                color="blue darken-1"
+                color="green darken-1"
                 text
                 @click="deleteDepartment(selected.id)"
                 >OK</v-btn
@@ -46,16 +46,36 @@
             <v-card-text class="black--text text-body1">
               <v-col cols="12">
                 <v-row>
-                  {{ selected.name }}
+                  <div>
+                    <v-icon class="mr-2 m-2 p-2">
+                      mdi-office-building
+                    </v-icon>
+                    {{ selected.name }}
+                  </div>
                 </v-row>
                 <v-row>
-                  {{ selected.location }}
+                  <div>
+                    <v-icon class="mr-2 m-2 p-2">
+                      mdi-map-marker
+                    </v-icon>
+                    {{ selected.location }}
+                  </div>
                 </v-row>
                 <v-row>
-                  {{ selected.phonenmbr }}
+                  <div>
+                    <v-icon class="mr-2 m-2 p-2">
+                      mdi-phone
+                    </v-icon>
+                    {{ selected.phonenmbr }}
+                  </div>
                 </v-row>
                 <v-row>
-                  {{ selected.headattendant }}
+                  <div>
+                    <v-icon class="mr-2 m-2 p-2">
+                      mdi-account
+                    </v-icon>
+                    {{ selected.headattendant }}
+                  </div>
                 </v-row>
               </v-col>
             </v-card-text>
@@ -85,6 +105,7 @@
                         label="Afdelingnaam*"
                         v-model="selected.name"
                         prepend-icon="mdi-office-building"
+                        :rules="[rules.required, rules.max]"
                         required
                       ></v-text-field>
                     </v-col>
@@ -94,6 +115,7 @@
                         label="Locatie*"
                         v-model="selected.location"
                         prepend-icon="mdi-map-marker"
+                        :rules="[rules.required, rules.max]"
                         required
                       ></v-text-field>
                     </v-col>
@@ -103,6 +125,11 @@
                         label="Telefoonnummer*"
                         v-model="selected.phonenmbr"
                         prepend-icon="mdi-phone"
+                        :rules="[rules.required, rules.tel]"
+                        pattern="^\d{10}$"
+                        type="tel"
+                        required
+                        counter
                       ></v-text-field>
                     </v-col>
 
@@ -112,14 +139,15 @@
                         :items="names"
                         label="Hoofdbegeleider*"
                         v-model="selected.headattendant"
+                        required
                       ></v-select>
                     </v-col>
                   </v-row>
                 </v-container>
-                <small>*indicates required field</small>
+                <small>*Verplichte velden</small>
                 <v-btn color="red" text left class="left" @click="closeEdit">
                   <v-icon>mdi-delete</v-icon>
-                  Close
+                  Annuleren
                 </v-btn>
                 <v-btn
                   color="green"
@@ -143,7 +171,7 @@
     </template>
     <!-- Geen data -->
     <template v-slot:no-data>
-      <p>Please Wait</p>
+      <p>Geen data</p>
     </template>
   </v-data-table>
 </template>
@@ -167,6 +195,12 @@ export default {
     departments: [],
     attendants: [],
     names: [],
+    rules: {
+      required: (value) => !!value || "Verplicht",
+      max: (value) => (value || "").length <= 20 || "Max 20 karakters",
+      tel: (value) =>
+        (value || "").length == 10 || "Telefoonnummer moet 10 karakters hebben",
+    },
   }),
   created() {
     this.getDepartment();
@@ -200,21 +234,30 @@ export default {
     },
     // Verwijderd afdelingen in firebase
     async deleteDepartment(item) {
-      await db.collection("Afdelingen").doc(item).delete();
+      await db
+        .collection("Afdelingen")
+        .doc(item)
+        .delete();
       this.getDepartment();
       this.dialogDelete = false;
       this.dialogOpen = false;
+      alert("Afdeling is verwijderd");
     },
     // Update afdeling in firebase
     async updateDepartment(item) {
-      await db.collection("Afdelingen").doc(item.id).update({
-        name: item.name,
-        location: item.location,
-        phonenmbr: item.phonenmbr,
-        headattendant: item.headattendant,
-      });
+      await db
+        .collection("Afdelingen")
+        .doc(item.id)
+        .update({
+          name: item.name,
+          location: item.location,
+          phonenmbr: item.phonenmbr,
+          headattendant: item.headattendant,
+        });
       this.getDepartment();
       this.dialogEdit = false;
+      this.dialogOpen = false;
+      alert("Afdeling is gewijzigd");
     },
     // Opent dialog om gegevens te bewerken
     editItem() {
@@ -240,6 +283,8 @@ export default {
     // Sluit de edit dialog af
     closeEdit() {
       this.dialogEdit = false;
+      this.dialogOpen = false;
+      this.getDepartment();
     },
   },
 };

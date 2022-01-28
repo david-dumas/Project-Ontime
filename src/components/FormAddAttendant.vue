@@ -26,6 +26,7 @@
                   label="Voornaam*"
                   v-model="firstname"
                   prepend-icon="mdi-account"
+                  :rules="[rules.required, rules.max]"
                   required
                 ></v-text-field>
               </v-col>
@@ -34,6 +35,7 @@
                 <v-text-field
                   label="Achternaam*"
                   v-model="lastname"
+                  :rules="[rules.required, rules.max]"
                   required
                 ></v-text-field>
               </v-col>
@@ -42,6 +44,7 @@
                 <v-text-field
                   label="Email*"
                   v-model="email"
+                  :rules="[rules.required, rules.email]"
                   prepend-icon="mdi-email"
                   required
                 ></v-text-field>
@@ -51,25 +54,35 @@
                 <v-text-field
                   label="Telefoonnummer*"
                   v-model="phonenmbr"
+                  :rules="[rules.required, rules.tel]"
                   prepend-icon="mdi-phone"
+                  pattern="^\d{10}$"
+                  type="tel"
+                  required
+                  counter
                 ></v-text-field>
               </v-col>
 
               <v-col cols="12">
                 <v-text-field
-                  label="Password*"
-                  type="password"
+                  label="Wachtwoord*"
+                  :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                  hint="Tenminste 8 karakters"
+                  counter
+                  @click:append="show1 = !show1"
+                  :type="show1 ? 'text' : 'password'"
                   v-model="password"
                   prepend-icon="mdi-lock"
+                  :rules="[rules.required, rules.min]"
                   required
                 ></v-text-field>
               </v-col>
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
+          <small>*Verplichte velden</small>
           <v-btn color="red" text left class="left" @click="close">
             <v-icon>mdi-delete</v-icon>
-            Close
+            Annuleren
           </v-btn>
           <v-btn color="green" text right class="left" type="submit">
             <v-icon>mdi-content-save</v-icon>
@@ -84,16 +97,26 @@
 <script>
 import { db } from "@/main";
 export default {
-  data() {
-    return {
-      dialog: false,
-      firstname: "",
-      lastname: "",
-      email: "",
-      phonenmbr: "",
-      password: "",
-    };
-  },
+  data: () => ({
+    dialog: false,
+    firstname: "",
+    lastname: "",
+    email: "",
+    phonenmbr: "",
+    password: "",
+    show1: false,
+    rules: {
+      required: (value) => !!value || "Verplicht",
+      max: (value) => (value || "").length <= 20 || "Max 20 karakters",
+      min: (value) => (value || "").length > 7 || "Min 8 karakters",
+      tel: (value) =>
+        (value || "").length == 10 || "Telefoonnummer moet 10 karakters hebben",
+      email: (value) => {
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return pattern.test(value) || "Incorrecte e-mail.";
+      },
+    },
+  }),
   mounted() {
     this.getAttendant();
   },
@@ -128,7 +151,8 @@ export default {
         this.email = "";
         this.phonenmbr = "";
         this.password = "";
-        // alert("Begeleider is toegevoegd");
+        alert("Begeleider is toegevoegd");
+        window.location.href = "admin-dashboard";
         this.getAttendant();
         this.dialog = false;
       } else {
